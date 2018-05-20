@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <base href="/">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    
+    
+    <!-- Main Angular Files -->
+    <script src="assets/js/angular.js"></script>
+    <script src="assets/js/angular-route.js"></script>
+    <script src="assets/js/angular-animate.js"></script>
+    
+
+<script src="app/app.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.1.1/Chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+<script src="/assets/js/jquery-1.12.0.min.js"></script>
+    <!-- Angular Config/Routes -->
+    
+    
+     
+
+    <script src="app/routes.js"></script>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+    
+
+
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.3.1/ui-bootstrap-tpls.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+        <script type="text/javascript" src="https://rawgit.com/sagiegurari/simple-web-notification/master/web-notification.js"></script>
+        <script type="text/javascript" src="https://rawgit.com/sagiegurari/angular-web-notification/master/angular-web-notification.js"></script>
+ 
+    <script src="app/controllers/userCtrl.js"></script>
+    <script src="app/controllers/mainCtrl.js"></script>
+    <script src="app/controllers/emailCtrl.js"></script>
+    <script src="app/controllers/managementCtrl.js"></script>
+    <script src="app/controllers/managementeCtrl.js"></script>
+    <script src="app/controllers/abonnementCtrl.js"></script>
+    <script src="app/controllers/historyCtrl.js"></script>
+    <script src="app/controllers/chartsCtrl.js"></script>
+    <script src="app/controllers/NotificationsController.js"></script>
+    <script src="app/controllers/recepteurCtrl.js"></script>
+    <script type="text/javascript" src="app/directives/fileModel.js"></script>
+  
+    
+ 
+
+
+    <script src="app/services/userServices.js"></script>
+    <script src="app/services/authServices.js"></script>
+     <script src="app/services/chaineServices.js"></script>
+     <script src="app/services/abonnementServices.js"></script>
+     <script src="app/services/historyServices.js"></script>
+     <script src="app/services/recepteurServices.js"></script>
+     <script src="app/services/uploadFileService.js"></script>
+      
+
+
+  
+
+ 
+
+
+   
+
+    <!-- Cascade Style Sheets -->
+    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/animate.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js" integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+" crossorigin="anonymous"></script>
+  <link href="assets/css/example.css" rel="stylesheet" />
+
+     
+  
+
+
+
+    
+  
+
+       
+    
+    <title>Audimat Plug</title>
+
+</head>
+
+<body ng-app="userApp"     ng-controller="mainCtrl as main" ng-show="main.loadme" ng-cloak>
+  
+  <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+     
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-fixed-top navbar-shrink">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand page-scroll" href="/">Audimat Plug</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="hidden active">
+                        <a href="#page-top"></a>
+                    </li>
+                    <li class="">
+                        <a class="page-scroll" href="/">Home</a>
+                    </li>
+                    <li class="">
+                        <a ng-show="!main.isLoggedIn" id="login"  class="page-scroll" href="/login">Login</a>
+                    </li>
+                    <li class="">
+                        <a ng-show="!main.isLoggedIn" class="page-scroll" href="/register">Register</a>
+                    </li>
+                    <li class="">
+                        <a ng-show="main.isLoggedIn" class="page-scroll" href="#" ng-click="main.logout();">Logout</a>
+                    </li>
+                    <li class="">
+                        <a ng-show="main.isLoggedIn && main.authorized"  class="page-scroll" href="/management">Management</a>
+                    </li>
+                    <li class="">
+                        <a ng-show="main.isLoggedIn && main.authorized"   class="page-scroll" href="/managemente">Chaines</a>
+                    </li>
+                    <li class="">
+                        <a ng-show="main.isLoggedIn && main.authorized"   class="page-scroll" href="/managementrecepteur">Recepteur</a>
+                    </li>
+                    <li class="">
+                        <a ng-show="main.isLoggedIn && main.authorized"   class="page-scroll" href="/managementhistory">History</a>
+                    </li>
+                     <li class="">
+                        <a ng-show="main.isLoggedIn"   class="page-scroll" href="/charts">Charts</a>
+                    </li>
+                    
+                       <li class="">
+                        <a ng-show="main.isLoggedIn && main.authorized"   class="page-scroll" href="/usermanage">Clients</a>
+                    </li>
+                    <li class="">
+                        <a ng-show="main.isLoggedIn" class="page-scroll" href="/profile">Hello {{ main.username }}</a>
+                    </li>
+                    <li class="" id="notification_li" ng-show="main.isLoggedIn && main.authorized">
+                        
+                        <a href="#" id="notificationLink"><i class="far fa-bell"></i><span id="notification_count">3</span></a>
+                        <div id="notificationContainer" data-ng-controller="NotificationsController">
+            <div id="notificationTitle">Notifications Title</div>
+            <div id="notificationsBody" class="notifications">
+                <ul>
+                    <li data-ng-repeat="notification in notifications">{{notification.subject}}</li>
+                </ul>
+            </div>
+            
+        </div>
+                    </li>
+
+
+            
+                </ul>
+
+           
+            </div>
+
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+    
+
+
+    
+
+    <!-- Header -->
+    <header ng-show="main.home">
+        <div class="container">
+            <div class="intro-text">
+                <div class="intro-lead-in">Audimat Plug</div>
+                <div class="intro-heading">Welcome to Audimat Plug</div>
+                <a ng-show="!main.isLoggedIn"  href="/login" class="page-scroll btn btn-xl">Sign In</a>
+                <a ng-show="!main.isLoggedIn" href="/register" class="page-scroll btn twitterbtn">Register</a>
+                <a ng-show="main.isLoggedIn" href="#" ng-click="main.logout();" class="page-scroll btn btn-xl">Logout</a>
+                <a ng-show="main.isLoggedIn && main.authorized" href="/management" class="page-scroll btn facebookbtn">View</a>
+                
+                
+
+            </div>
+        </div>
+    </header>
+
+
+    
+    <section id="services">
+        <div class="container">
+                
+            <div class="row">
+             
+                <!-- Angular View -->
+                <div ng-view></div>
+                <!-- Angular View -->
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Grid Section -->
+    <section ng-show="main.home" id="portfolio" class="bg-light-gray">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+
+                    <h2 class="section-heading">About This Page</h2>
+                    <h3 class="section-subheading text-muted">Audience tv</h3>
+                </div>
+            </div>
+            <div class="row text-center">
+                <div class="col-md-4">
+                    <span class="glyphicon glyphicon-film"></span>
+                    <h4 class="service-heading">YouTube</h4>
+                   
+                </div>
+                <div class="col-md-4">
+                    <span class="glyphicon glyphicon-usd"></span>
+                    <h4 class="service-heading">Facebook</h4>
+                    
+                </div>
+                <div class="col-md-4">
+                    <span class="glyphicon glyphicon-save"></span>
+                    <h4 class="service-heading">Github</h4>
+                    
+                </div>
+                <form class="notification-form" ng-controller="NotificationsController">
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" class="form-control" id="title" placeholder="Notification Title" ng-model="title" />
+            </div>
+            <div class="form-group">
+                <label for="message">Notification Text</label>
+                <textarea class="form-control" rows="3" id="message" placeholder="Notification Text" ng-model="text"></textarea>
+            </div>
+            <button type="button" class="show-button btn btn-primary" notification-title="title" notification-text="text">Show Notification</button>
+        </form>
+            </div>
+        </div>
+    </section>
+
+    <footer ng-show="main.home">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <span class="copyright">Copyright © Audience Tv</span>
+                </div>
+                <div class="col-md-4">
+                    <ul class="list-inline social-buttons">
+                        <li><a href="#"><i class="fa fa-twitter"></i></a>
+                        </li>
+                        <li><a href="#"><i class="fa fa-facebook"></i></a>
+                        </li>
+                        <li><a href="#"><i class="fa fa-linkedin"></i></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <ul class="list-inline quicklinks">
+                        <li><a href="#">Privacy Policy</a>
+                        </li>
+                        <li><a href="#">Terms of Use</a>
+                        </li>
+                         
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- BootstrapJS Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button ng-hide="main.hideButton" type="button" ng-click="main.endSession();" class="close" data-dismiss="modal">&times;</button>
+                    <!-- Modal Header -->
+                    <h4 class="modal-title">{{ main.modalHeader }}</h4>
+                </div>
+                <!-- Modal Body -->
+                <div class="modal-body">
+                    <p>{{ main.modalBody }}</p>
+                    <div ng-show="main.hideButton" class="dizzy-gillespie"></div>
+                </div>
+                <div class="modal-footer">
+                    <!-- Modal 'Yes' & 'No' Buttons -->
+                    <button type="button" ng-hide="main.hideButton" ng-click="main.renewSession();" class="btn btn-primary" data-dismiss="modal">Yes</button>
+                    <button type="button" ng-hide="main.hideButton" ng-click="main.endSession();" class="btn btn-danger" data-dismiss="modal">No</button>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+     
+    <!-- BootstrapJS Modal -->
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    
+    <script src="assets/js/bootstrap.js"></script>
+     <script src="assets/js/dirPagination.js"></script>
+     
+     <script>
+         $(document).ready(function () {
+    $("#notificationLink").click(function () {
+        $("#notificationContainer").fadeToggle(300);
+        $("#notification_count").fadeOut("slow");
+        $('#notificationLink > i.fa-bell').addClass('fa-bell-o');
+        $('#notificationLink > i.fa-bell').removeClass('fa-bell');
+         function notifyMe(message) {
+           // Let's check if the browser supports notifications
+           if (!("Notification" in window)) {
+             alert("This browser does not support notifications");
+           }
+
+           // Let's check whether notification permissions have already been granted
+           else if (Notification.permission === "granted") {
+             // If it's okay let's create a notification
+             var notification = new Notification(message);
+           }
+
+           // Otherwise, we need to ask the user for permission
+           else if (Notification.permission !== 'denied') {
+             Notification.requestPermission(function (permission) {
+
+               // We store the authorization information
+               if(!('permission' in Notification)) {
+                 Notification.permission = permission;
+               }
+
+               // If the user accepts, let's create a notification
+               if (permission === "granted") {
+                 var notification = new Notification(message);
+               }
+             });
+           }
+
+
+         }
+
+
+          // Connect to the server
+           var socket = io.connect('http://localhost:8088');
+           // WHEN we receive the notification event execute the notifyMe function
+           socket.on('notification', function (data) {
+             notifyMe(data.message);
+           });
+            socket.on('output', function (data) {
+             notifyMe(data);
+           });
+        return false;
+    });
+       $(document).click(function () {
+        $("#notificationContainer").hide();
+    });
+
+    //Popup on click
+    $("#notificationContainer").click(function () {
+        return false;
+    });
+
+   
+
+});
+
+     </script>
+  <script>
+          $(function() {
+    $.ajax({
+        type: "GET",
+        url: "/api/managementhistory/",
+        cache: false,
+        dataType: "json",
+        success: function (result) {
+
+            function notifyMe(message) {
+           // Let's check if the browser supports notifications
+           if (!("Notification" in window)) {
+             alert("This browser does not support notifications");
+           }
+
+           // Let's check whether notification permissions have already been granted
+           else if (Notification.permission === "granted") {
+             // If it's okay let's create a notification
+             var notification = new Notification(message);
+           }
+
+           // Otherwise, we need to ask the user for permission
+           else if (Notification.permission !== 'denied') {
+             Notification.requestPermission(function (permission) {
+
+               // We store the authorization information
+               if(!('permission' in Notification)) {
+                 Notification.permission = permission;
+               }
+
+               // If the user accepts, let's create a notification
+               if (permission === "granted") {
+                 var notification = new Notification(message);
+               }
+             });
+           }
+
+
+         }
+
+
+            var socket = io.connect('http://localhost:8088');
+           // WHEN we receive the notification event execute the notifyMe function
+           
+            socket.on('output', function (data) {
+             notifyMe(data);
+
+           });
+
+           
+            var labeldata = [];
+            var chartData = [];
+            for(var i =0; i < result.length; i++)
+            {
+                
+                labeldata.push(result[i].channel);
+                chartData.push(result[i].recepteur)
+            }
+
+
+            var ctx = document.getElementById("myChart");
+            var myChart = new Chart (ctx, {
+                type : "line",
+                data: {
+                    labels: labeldata,
+
+                    datasets: [
+                        {
+                            label: "Recepteur",
+                            fill: false,
+                            lineTension: 0.1,
+                            backgroundColor: "rgba(255,99,132,0.4)",
+                            borderColor: "rgba(255,99,132,1)",
+                            borderCapStyle: 'butt',
+                            borderDash: [],
+                            borderDashOffset: 0.0,
+                            borderJoinStyle: 'miter',
+                            pointBorderColor: "rgba(75,192,192,1)",
+                            pointBackgroundColor: "#FF0000",
+                            pointBorderWidth: 1,
+                            pointHoverRadius: 5,
+                            pointHoverBackgroundColor: "rgba(255,99,132,0.4)",
+                            pointHoverBorderColor: "rgba(255,99,132,1)",
+                            pointHoverBorderWidth: 5,
+                            pointRadius: 1,
+                            pointHitRadius: 5,
+                            data: chartData
+                        },
+
+                    ]
+
+                }
+            });
+        }
+    })
+})
+        </script>
+        <script>
+          $(function() {
+    $.ajax({
+        type: "GET",
+        url: "/api/managementhistory/",
+        cache: false,
+        dataType: "json",
+        success: function (result) {
+           
+            var labeldata = [];
+            var chartData = [];
+            for(var i =0; i < result.length; i++)
+            {
+                labeldata.push(result[i].channel);
+                chartData.push(result[i].recepteur)
+            }
+
+
+            var ctx = document.getElementById("myChart1");
+            var myChart = new Chart (ctx, {
+                type : "pie",
+                data: {
+                    labels: labeldata,
+
+                    datasets: [
+                        {
+                            label: "Recepteur",
+                            fill: false,
+                            lineTension: 0.1,
+                            backgroundColor: "rgba(255,99,132,1)",
+                            borderColor: "rgba(75,192,192,1)",
+                            borderCapStyle: 'butt',
+                            borderDash: [],
+                            borderDashOffset: 0.0,
+                            borderJoinStyle: 'miter',
+                            pointBorderColor: "rgba(75,192,192,1)",
+                            pointBackgroundColor: "#0000",
+                            pointBorderWidth: 1,
+                            pointHoverRadius: 5,
+                            pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                            pointHoverBorderColor: "rgba(220,220,220,1)",
+                            pointHoverBorderWidth: 5,
+                            pointRadius: 1,
+                            pointHitRadius: 5,
+                            data: chartData
+                        },
+
+                    ]
+
+                }
+            });
+        }
+    })
+})
+        </script>
+
+  <script>
+          $(function() {
+    $.ajax({
+        type: "GET",
+        url: "/api/managementhistory/",
+        cache: false,
+        dataType: "json",
+        success: function (result) {
+           
+            var labeldata = [];
+            var chartData = [];
+            for(var i =0; i < result.length; i++)
+            {
+                labeldata.push(result[i].channel);
+                chartData.push(result[i].recepteur)
+            }
+
+
+            var ctx = document.getElementById("myChart2");
+            var myChart = new Chart (ctx, {
+                type : "bar",
+                data: {
+                    labels: labeldata,
+
+                    datasets: [
+                        {
+                            label: "Recepteur",
+                            fill: false,
+                            lineTension: 0.1,
+                            backgroundColor: "rgba(172,194,132,0.4)",
+                            borderColor: "rgba(75,192,192,1)",
+                            borderCapStyle: 'butt',
+                            borderDash: [],
+                            borderDashOffset: 0.0,
+                            borderJoinStyle: 'miter',
+                            pointBorderColor: "rgba(75,192,192,1)",
+                            pointBackgroundColor: "#0000",
+                            pointBorderWidth: 1,
+                            pointHoverRadius: 5,
+                            pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                            pointHoverBorderColor: "rgba(220,220,220,1)",
+                            pointHoverBorderWidth: 5,
+                            pointRadius: 1,
+                            pointHitRadius: 5,
+                            data: chartData
+                        },
+
+                    ]
+
+                }
+            });
+        }
+    })
+})
+        </script>
+       <script>
+          $(function() {
+    $.ajax({
+        type: "GET",
+        url: "/api/managementhistory/",
+        cache: false,
+        dataType: "json",
+        success: function (result) {
+           
+            var labeldata = [];
+            var chartData = [];
+            for(var i =0; i < result.length; i++)
+            {
+                labeldata.push(result[i].bouquet);
+                chartData.push(result[i].recepteur)
+            }
+
+
+            var ctx = document.getElementById("myChart3");
+            var myChart = new Chart (ctx, {
+                type : "line",
+                data: {
+                    labels: labeldata,
+
+                    datasets: [
+                        {
+                            label: "Recepteur",
+                            fill: false,
+                            lineTension: 0.1,
+                            backgroundColor: "rgba(172,194,132,0.4)",
+                            borderColor: "rgba(75,192,192,1)",
+                            borderCapStyle: 'butt',
+                            borderDash: [],
+                            borderDashOffset: 0.0,
+                            borderJoinStyle: 'miter',
+                            pointBorderColor: "rgba(75,192,192,1)",
+                            pointBackgroundColor: "#0000",
+                            pointBorderWidth: 1,
+                            pointHoverRadius: 5,
+                            pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                            pointHoverBorderColor: "rgba(220,220,220,1)",
+                            pointHoverBorderWidth: 5,
+                            pointRadius: 1,
+                            pointHitRadius: 5,
+                            data: chartData
+                        },
+
+                    ]
+
+                }
+            });
+        }
+    })
+})
+        </script>
+</body>
+
+</html>

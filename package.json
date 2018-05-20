@@ -1,0 +1,40 @@
+{
+  "name": "meantutorial",
+  "version": "1.0.0",
+  "description": "mean stack application",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "MEAN",
+    "stack"
+  ],
+  "author": "David Acosta",
+  "license": "ISC",
+  "dependencies": {
+    "angular-chart.js": "^1.1.1",
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "express-session": "^1.14.2",
+    "fusioncharts": "^3.12.2",
+    "json-object": "0.0.3",
+    "jsonwebtoken": "^7.1.9",
+    "mongodb": "^3.0.3",
+    "mongoose": "^4.6.0",
+    "mongoose-title-case": "0.0.4",
+    "mongoose-validator": "^1.2.5",
+    "morgan": "^1.7.0",
+    "nodemailer": "^2.7.0",
+    "nodemailer-sendgrid-transport": "^0.2.0",
+    "passport": "^0.3.2",
+    "passport-facebook": "^2.1.1",
+    "passport-google-oauth": "^1.0.0",
+    "passport-twitter": "^1.0.4",
+    "socket.io": "^2.0.4",
+    "socketio-auth": "^0.1.0",
+    "struct": "0.0.12"
+  }
+}
