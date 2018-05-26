@@ -17,7 +17,7 @@ var app = express();
 var bouq="";    
 var chaine="";
 var Token="";
-var Tokenrecepteur="eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYWhtZWRiaGQiLCJleHAiOjE1MjQyNjY5ODAsImp0aSI6IkFobWVkYmhkLTYifQ.LDaIO3M8UAkOJIMq7tVXsRSvAcLwS8wzn2N0xY_WKVnXB2P8GvhM-48GWS9-DXhjUlbXF2luD6vHYX459Lpm0g";
+var Tokenrecepteur="eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYWhtZWRiaGQiLCJleHAiOjE1MjczNzgxODksImp0aSI6IkFobWVkYmhkLTYifQ.zk9wMnnYifOuuYTqpRNg5BicgoE0f0NQm_qz2OgNz0h9WuBi9fj8FxB7fCd4hKdVb_ujwtkMdPXKNSfGucaiIg";
 /* var History = Struct()
 	.chars('recepteur',10)
     .chars('bouquet',10)
@@ -64,13 +64,16 @@ function addHistory(data){
     var channel_name = channel.nom_chaine;
     var recepteur = channel.recepteur;
     var program ="";
+    var duree = channel.duree;
     console.log(channel);
-    var data = {recepteur:recepteur,
+    /* var data = {
+        recepteur:recepteur,
         bouquet:"",
         channel:channel_name,
         program:"",
-        date:datetime
-    };
+        date:datetime,
+        duree:duree
+    }; */
     MongoClient.connect(url, function(err, db) {
         if (err) throw err;
         var dbo = db.db("testhoussem");
@@ -85,7 +88,8 @@ function addHistory(data){
                 bouquet:resl[0].bouquet,
                 channel:channel_name,
                 program:resl[0].current_program,
-                date:datetime
+                date:datetime,
+                duree:duree
             };
             console.log(data);
             MongoClient.connect(url, function(err, db) {
@@ -155,7 +159,8 @@ function addHistory(data){
                         bouquet:b,
                         channel:channel_name,
                         program:program,
-                        date:datetime
+                        date:datetime,
+                        duree:duree
                     };
                     console.log(data);
                     MongoClient.connect(url, function(err, db) {
