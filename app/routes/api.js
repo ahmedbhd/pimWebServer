@@ -39,7 +39,7 @@ console.log("client connected ")
 
          MongoClient.connect(url, function(err, db) {
             if (err) throw err;
-            var dbo = db.db("testhoussem");
+            var dbo = db.db("pimdb");
             dbo.collection("history").find({}).toArray( function(err, result) {
               if (err) throw err;
               console.log("data "+[data]);
@@ -76,7 +76,7 @@ function addHistory(data){
     }; */
     MongoClient.connect(url, function(err, db) {
         if (err) throw err;
-        var dbo = db.db("testhoussem");
+        var dbo = db.db("pimdb");
     
         dbo.collection("channel").find({name:channel_name}).toArray(function(err, resl) {
         if (err) throw err;
@@ -94,7 +94,7 @@ function addHistory(data){
             console.log(data);
             MongoClient.connect(url, function(err, db) {
                 if (err) throw err;
-                var dbo = db.db("testhoussem");
+                var dbo = db.db("pimdb");
             
                 dbo.collection("history").insertOne(data, function(err, res) {
                 if (err) throw err;
@@ -165,7 +165,7 @@ function addHistory(data){
                     console.log(data);
                     MongoClient.connect(url, function(err, db) {
                         if (err) throw err;
-                        var dbo = db.db("testhoussem");
+                        var dbo = db.db("pimdb");
                     
                         dbo.collection("history").insertOne(data, function(err, res) {
                         if (err) throw err;
@@ -223,7 +223,7 @@ module.exports = function(router) {
         console.log("history")
         MongoClient.connect(url, function(err, db) {
             if (err) throw err;
-            var dbo = db.db("testhoussem");
+            var dbo = db.db("pimdb");
             dbo.collection("history").find({}).toArray( function(err, result) {
               if (err) throw err;
               res.json(result);
@@ -1340,7 +1340,7 @@ router.post('/authenticate', function(req, res) {
         };
         MongoClient.connect(url, function(err, db) {
             if (err) throw err;
-            var dbo = db.db("testhoussem");
+            var dbo = db.db("pimdb");
         
             dbo.collection("channel").find({name:channel_name}).toArray(function(err, resl) {
             if (err) throw err;
@@ -1357,7 +1357,7 @@ router.post('/authenticate', function(req, res) {
                 console.log(data);
                 MongoClient.connect(url, function(err, db) {
                     if (err) throw err;
-                    var dbo = db.db("testhoussem");
+                    var dbo = db.db("pimdb");
                 
                     dbo.collection("history").insertOne(data, function(err, res) {
                     if (err) throw err;
@@ -1426,7 +1426,7 @@ router.post('/authenticate', function(req, res) {
                         console.log(data);
                         MongoClient.connect(url, function(err, db) {
                             if (err) throw err;
-                            var dbo = db.db("testhoussem");
+                            var dbo = db.db("pimdb");
                         
                             dbo.collection("history").insertOne(data, function(err, res) {
                             if (err) throw err;
@@ -1456,7 +1456,7 @@ router.post('/authenticate', function(req, res) {
         
         MongoClient.connect(url, function(err, db) {
             if (err) throw err;
-            var dbo = db.db("testhoussem");
+            var dbo = db.db("pimdb");
             dbo.collection("history").find({}).toArray( function(err, result) {
               if (err) throw err;
               //var jsonString = JSON.stringify(result[0]);
@@ -1474,7 +1474,7 @@ router.post('/authenticate', function(req, res) {
         
         MongoClient.connect(url, function(err, db) {
             if (err) throw err;
-            var dbo = db.db("testhoussem");
+            var dbo = db.db("pimdb");
             dbo.collection("history").find({channel:c}).count(function(err, resl) {
                 if (err) throw err;
               //var jsonString = JSON.stringify(result[0]);
@@ -1492,7 +1492,7 @@ router.post('/authenticate', function(req, res) {
         
         MongoClient.connect(url, function(err, db) {
             if (err) throw err;
-            var dbo = db.db("testhoussem");
+            var dbo = db.db("pimdb");
             dbo.collection("history").find({channel:c}).toArray(function(err, resl) {
                 if (err) throw err;
               //var jsonString = JSON.stringify(result[0]);
@@ -1512,7 +1512,7 @@ router.post('/authenticate', function(req, res) {
         
         MongoClient.connect(url, function(err, db) {
             if (err) throw err;
-            var dbo = db.db("testhoussem");
+            var dbo = db.db("pimdb");
             dbo.collection("history").find({channel:c,program:p}).count(function(err, resl) {
                 if (err) throw err;
               //var jsonString = JSON.stringify(result[0]);
@@ -1531,7 +1531,7 @@ router.post('/authenticate', function(req, res) {
         var r = req.params._region;
         MongoClient.connect(url, function(err, db) {
             if (err) throw err;
-            var dbo = db.db("testhoussem");
+            var dbo = db.db("pimdb");
             dbo.collection("recepteurs").find({client:c,region:r}).toArray(function(err, resl) {
                 if (err) throw err;
               //var jsonString = JSON.stringify(result[0]);
@@ -1551,7 +1551,7 @@ router.post('/authenticate', function(req, res) {
 
         MongoClient.connect(url, function(err, db) {
             if (err) throw err;
-            var dbo = db.db("testhoussem");
+            var dbo = db.db("pimdb");
             dbo.collection("recepteurs").find({client:c,fam_size:s}).toArray(function(err, resl) {
                 if (err) throw err;
               //var jsonString = JSON.stringify(result[0]);
@@ -1570,7 +1570,7 @@ router.post('/authenticate', function(req, res) {
 
         MongoClient.connect(url, function(err, db) {
             if (err) throw err;
-            var dbo = db.db("testhoussem");
+            var dbo = db.db("pimdb");
             dbo.collection("recepteurs").find({client:c}).toArray(function(err, resl) {
                 if (err) throw err;
               //var jsonString = JSON.stringify(result[0]);
@@ -1590,7 +1590,7 @@ router.post('/authenticate', function(req, res) {
 
         MongoClient.connect(url, function(err, db) {
             if (err) throw err;
-            var dbo = db.db("testhoussem");
+            var dbo = db.db("pimdb");
             dbo.collection("recepteurs").find({client:c,fam_age:a}).toArray(function(err, resl) {
                 if (err) throw err;
               //var jsonString = JSON.stringify(result[0]);
