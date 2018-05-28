@@ -1,0 +1,58 @@
+<!-- Heading -->
+<div class="row text-center">
+    <div class="container">
+        <h2 class="section-heading">Chaine Management</h2>
+      
+    </div>
+</div>
+<!-- Heading -->
+
+<br>
+
+<!-- Loading Icon (Bootstrap) -->
+<div class="jumbotron text-center" ng-show="chaines.loading">
+    <span class="glyphicon glyphicon-repeat spinner"></span>
+    <p>Loading....</p>
+</div>
+<!-- Loading Icon (Bootstrap) -->
+
+
+<br>
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <strong>Chaine management</strong>
+    </div>
+    <table class="table">
+        <tr>
+            <th>Nom Chaine</th>
+            <th>Nb telespectateurs</th>
+            <th>Picture</th>
+            <th>Frequence</th>
+        </tr>
+        <tr ng-repeat="ch in managementChaine.chaines">
+            <td>{{ ch.nomchaine }}</td>
+            <td>{{ ch.nb_tele }}</td>
+            <td>{{ ch.picture }}</td>
+            <td>{{ ch.frequence }}</td>
+            <td>
+                <a href="#">
+                    <button type="button" class="btn btn-primary">Edit</button>
+                </a>
+                <a href="#">
+                    <button type="button" class="btn btn-danger">Delete</button>
+                </a>
+            </td>
+        </tr>
+        
+    </table>
+</div>
+
+
+
+
+
+
+
+
+
+<!-- Custom Error Message -->

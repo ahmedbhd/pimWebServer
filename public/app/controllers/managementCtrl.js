@@ -1,9 +1,19 @@
-angular.module('managementController', [])
-
+angular.module('managementController', ['ui-notification'])
+.config(function(NotificationProvider) {
+        NotificationProvider.setOptions({
+            delay: 10000,
+            startTop: 20,
+            startRight: 10,
+            verticalSpacing: 20,
+            horizontalSpacing: 20,
+            positionX: 'left',
+            positionY: 'bottom'
+        });
+})
 // Controller: User to control the management page and managing of user accounts
-.controller('managementCtrl', function(User, Chaine, $scope) {
+.controller('managementCtrl', function(User, Chaine, $scope, $http, Notification) {
     var app = this;
-
+ app.username = undefined;
      // Start loading icon on page load
     app.accessDenied = true; // Hide table while loading
     app.errorMsg = false; // Clear any error messages
@@ -12,7 +22,13 @@ angular.module('managementController', [])
     
     app.limit = 5; // Set a default limit to ng-repeat
     app.searchLimit = 0; // Set the default search page results limit to zero
+    
 
+
+    app.createUser = function(username){
+        console.log("this is creating the user ", username);
+        $rootScope.$emit('new-user', username);
+      }
     // Function: get all the users from database
     function getUsers() {
 
@@ -30,10 +46,10 @@ angular.module('managementController', [])
             // Check if able to get data from database
             if (data.data.success) {
                 // Check which permissions the logged in user has
-                if (data.data.permission === 'admin') {
+                if (data.data.permission === 'admin' || data.data.permission === 'client') {
                     app.users = data.data.users;
                  
-                    
+                    Notification.success({message: 'Success notification<br>Some other <b>content</b><br><a href="https://github.com/alexcrack/angular-ui-notification">This is a link</a><br><img src="https://angularjs.org/img/AngularJS-small.png">', title: 'seuil activé'});
                   
                     app.accessDenied = false; // Show table
                     
@@ -43,8 +59,8 @@ angular.module('managementController', [])
                        app.deleteAccess = true; // CLear access on load
                       // Show delete button
                     } else if (data.data.permission === 'client') {
-                          app.editAccess = true; // Clear access on load
-                          app.deleteAccess = true; // CLear access on load
+                          app.editAccess = false; // Clear access on load
+                          app.deleteAccess = false; // CLear access on load
                       
                         // CLear access on load
                     }
@@ -64,7 +80,88 @@ angular.module('managementController', [])
     }
 
     getUsers(); // Invoke function to get users from databases
+    
+      $scope.working = 'Angular is Working';
+        function onError () {
 
+
+      app.onError = function (error) {
+            $scope.error = error.data;
+        };
+        };
+        //end error function
+
+        //get all persone
+      app.onUsersGetCompleted = function(response){
+        $scope.users = response.data;
+            console.log($scope.users);
+      }
+      
+       function refresh() {
+
+
+      app.refresh = function(){
+          $http.get('/api/management/')
+            .then(onUsersGetCompleted, onError);
+          console.log('Response received...');
+        }
+      };
+        
+        
+      //end get all persons
+
+        function onGetByIdCompleted(){
+
+
+        app.onGetByIdCompleted = function(response){
+            $scope.chaine = response.data;
+            console.log(response.data);
+        };
+        };
+
+
+        $scope.searchUser = function(id){
+            $http.get('/api/user/' + id)
+                    .then(onGetByIdCompleted, onError);
+            console.log(id);
+        };
+        
+
+        function onAddUserCompleted () {
+
+
+        app.onAddUserCompleted = function(response){
+            $scope.user = response.data;
+            console.log(response.data);
+            refresh();
+        };
+         };
+        $scope.addUser = function(chaine){
+            $http.post('/api/addUser/', user)
+                    .then(onAddUserCompleted, onError);
+            console.log(chaine);
+        };
+        //end add new person
+
+      
+        //end delete person
+
+        //update person
+        $scope.updateUser= function(chaine){
+            $http.put('/api/updateUser/', user)
+                .then(onUpdateUserCompleted, onError);
+                    console.log(user);
+        };
+        
+        function onUpdateUserCompleted(){
+
+
+        app.onUpdateUserCompleted = function(response){
+            $scope.user = response.data;//response.data;
+            console.log(response.data);
+            refresh();
+        };
+      };
     // Function: Show more results on page
     app.showMore = function(number) {
         app.showMoreError = false; // Clear error message
@@ -89,6 +186,7 @@ angular.module('managementController', [])
             // Check if able to delete user
             if (data.data.success) {
                 getUsers(); // Reset users on page
+               Notification.primary('Primary notification');
             } else {
                 app.showMoreError = data.data.message; // Set error message
             }
@@ -217,18 +315,23 @@ angular.module('managementController', [])
         app.phase2 = false; // Set username to inactive
         app.phase3 = false; // Set e-mail tab to inactive
         app.phase4 = true; // Set permission tab to active
-        app.disableUser = false; // Disable buttons while processing
-        app.disableModerator = false; // Disable buttons while processing
-        app.disableAdmin = false; // Disable buttons while processing
+        app.disableClient = false; // Disable buttons while processing
+        app.disableSilver = false; // Disable buttons while processing
+        app.disableGold = false; // Disable buttons while processing
+        app.disablePlatinium = false; // Disable buttons while processing
         app.errorMsg = false; // Clear any error messages
         // Check which permission was set and disable that button
-        if ($scope.newPermission === 'user') {
-            app.disableUser = true; // Disable 'user' button
-        } else if ($scope.newPermission === 'moderator') {
-            app.disableModerator = true; // Disable 'moderator' button
-        } else if ($scope.newPermission === 'admin') {
-            app.disableAdmin = true; // Disable 'admin' button
+        if ($scope.newPermission === 'client') {
+            app.disableClient = true; // Disable 'user' button
+        } else if ($scope.newPermission === 'silver') {
+            app.disableSilver = true; // Disable 'moderator' button
+        } else if ($scope.newPermission === 'gold') {
+            app.disableGold = true; // Disable 'admin' button
+        }else if ($scope.newPermission === 'platinium') {
+            app.disablePlatinium = true; // Disable 'admin' button
         }
+
+
     };
 
     // Function: Update the user's name
@@ -304,6 +407,7 @@ angular.module('managementController', [])
     // Function: Update the user's username
     app.updateUsername = function(newUsername, valid) {
         app.errorMsg = false; // Clear any error message
+        
         app.disabled = true; // Lock form while processing
         // Check if username submitted is valid
         if (valid) {
@@ -337,9 +441,10 @@ angular.module('managementController', [])
     // Function: Update the user's permission
     app.updatePermissions = function(newPermission) {
         app.errorMsg = false; // Clear any error messages
-        app.disableUser = true; // Disable button while processing
-        app.disableModerator = true; // Disable button while processing
-        app.disableAdmin = true; // Disable button while processing
+        app.disableClient = true; // Disable button while processing
+        app.disableGold = true; // Disable button while processing
+        app.disableSilver = true; // Disable button while processing
+        app.disablePlatinium = true; // Disable button while processing
         var userObject = {}; // Create the user object to pass to function
         userObject._id = app.currentUser; // Get the user _id in order to edit
         userObject.permission = newPermission; // Set the new permission to the user
@@ -354,18 +459,28 @@ angular.module('managementController', [])
                     app.successMsg = false; // Set success message
                     $scope.newPermission = newPermission; // Set the current permission variable
                     // Check which permission was assigned to the user
-                    if (newPermission === 'user') {
-                        app.disableUser = true; // Lock the 'user' button
-                        app.disableModerator = false; // Unlock the 'moderator' button
-                        app.disableAdmin = false; // Unlock the 'admin' button
-                    } else if (newPermission === 'client') {
-                        app.disableModerator = true; // Lock the 'moderator' button
-                        app.disableUser = false; // Unlock the 'user' button
-                        app.disableAdmin = false; // Unlock the 'admin' button
-                    } else if (newPermission === 'admin') {
-                        app.disableAdmin = true; // Lock the 'admin' buton
-                        app.disableModerator = false; // Unlock the 'moderator' button
-                        app.disableUser = false; // unlock the 'user' button
+                    if (newPermission === 'client') {
+                        app.disableClient = true; 
+                        app.disableSilver = false; 
+                        app.disableGold = false; 
+                        app.disablePlatinium = false; 
+                    } else if (newPermission === 'silver') {
+                        app.disableSilver = true; // Lock the 'moderator' button
+                        app.disableClient = false; // Unlock the 'user' button
+                        app.disableGold = false; // Unlock the 'admin' button
+                        app.disablePlatinium = false; // Unlock the 'admin' button
+                    } else if (newPermission === 'gold') {
+                        app.disableGold = true; // Lock the 'admin' buton
+                        app.disableClient = false; // Unlock the 'moderator' button
+                        app.disableSilver = false; // unlock the 'user' button
+                        app.disablePlatinium = false; // unlock the 'user' button
+
+                    }else if (newPermission === 'platinium') {
+                        app.disablePlatinium = true; // Lock the 'admin' buton
+                        app.disableClient = false; // Unlock the 'moderator' button
+                        app.disableSilver = false; // unlock the 'user' button
+                        app.disableGold = false; // unlock the 'user' button
+
                     }
                 }, 2000);
             } else {
@@ -375,4 +490,5 @@ angular.module('managementController', [])
             }
         });
     };
+
 });

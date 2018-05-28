@@ -1,9 +1,11 @@
-angular.module('abonnementController', [])
-.controller('abonnementCtrl', function(Abonnement, User) {
+angular.module('abonnementController', ['ui-notification'])
+.controller('abonnementCtrl', function(Abonnement, User, $scope, Notification) {
    var app = this;
    
   
-  
+  $scope.send =function(){
+     Notification.success({message: 'Notification envoye'});
+  }
   
 
    function getAbonnements(){
@@ -48,7 +50,9 @@ angular.module('abonnementController', [])
         app.showMoreError = false; // Clear error message
     };
 
-
+    $scope.abonnement = {
+        active: true
+    };
 
 
 });
@@ -114,3 +118,6 @@ angular.module('abonnementController', [])
         };
 
         }
+
+
+

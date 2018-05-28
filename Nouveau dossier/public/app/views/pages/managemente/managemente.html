@@ -1,0 +1,267 @@
+<div class="row text-center">
+    <div class="container">
+        <h2 class="section-heading">Chaine Management</h2>
+     
+    </div>
+   
+</div>
+<!-- Heading -->
+
+<br>
+
+<!-- Loading Icon (Bootstrap) -->
+<div class="jumbotron text-center" ng-show="management.loading">
+    <span class="glyphicon glyphicon-repeat spinner"></span>
+    <p>Loading....</p>
+</div>
+<!-- Loading Icon (Bootstrap) -->
+
+<br>
+<div>
+    <div class="col-lg-6">
+        <div class="input-group">
+            <span class="input-group-addon">Results to display:</span>
+            <input type="text" class="form-control" ng-model="number">
+        </div>
+    </div>
+</div>
+
+<div class="container">
+   <button type="button" ng-click="managemente.showMore(number);" class="btn btn-success">Apply Filter</button>
+
+    <!--/ Show All Button -->
+    <button type="button" ng-click="managemente.showAll" class="btn btn-warning">Show All</button>
+
+<div class="navbar-form">
+        <div class="form-group">
+           <input class="form-control col-md-0" ng-change="managemente.figureOutItemsToDisplay()"  type="text" ng-model="test" placeholder="Search"/>
+          
+        </div>
+      
+
+
+    <button type="button" ng-click="searchChaine(123456789012);"  class="btn btn-primary pull-right" data-toggle="modal" data-target="#chaineAddModal" class="glyphicon glyphicon-plus">
+        <i class="glyphicon glyphicon-plus"></i>
+      </button>
+        <!-- Serach Button -->
+        
+        <!-- Clear Button -->
+        <button type="button" ng-click="managemente.clear();" class="btn btn-default">Clear</button>
+        <!-- Advanced Search Button -->
+        <a href="/searchchaine">
+            <button type="button" class="btn btn-default">Advanced Search</button>
+        </a>
+    </div>
+    <!-- Simple Search Bar /-->
+
+    <!-- Custom Error Message -->
+    <div class="row show-hide-message" ng-show="management.showMoreError">
+        <div class="alert alert-danger">{{ management.showMoreError }}</div>
+    </div>
+    <!-- Custom Error Message -->
+
+</div>
+<!-- Custom Error Message -->
+<div class="row show-hide-message" ng-show="managemente.showMoreError">
+    <div class="alert alert-danger">{{ managemente.showMoreError }}</div>
+</div>
+ 
+
+<br>
+<!-- User Management Table -->
+<div class="panel panel-primary">
+    <!-- Heading -->
+    <div class="panel-heading">
+        <strong>Chaine Management</strong>
+    </div>
+    <!-- Start: Table -->
+    <table class="table">
+        <tr>
+            <th ng-click="sort('picture')">Picture
+            <span class="glyphicon sort-icon" ng-show="sortKey=='picture'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+            </th>
+            <th ng-click="sort('nomchaine')">Nom Chaine
+            <span class="glyphicon sort-icon" ng-show="sortKey=='nomchaine'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+            </th>
+            <th ng-click="sort('bouquet')">Bouquet
+            <span class="glyphicon sort-icon" ng-show="sortKey=='bouquet'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+            </th>
+            <th ng-click="sort('recepteur')">Recepteur
+            <span class="glyphicon sort-icon" ng-show="sortKey=='recepteur'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+            </th>
+           
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+        <tr dir-paginate="chaine in managemente.chaines= (managemente.chaines|filter: test)
+        |itemsPerPage:8|limitTo: managemente.limit| orderBy: sortKey:reverse">
+            <td><img ng-src="{{ chaine.picture}}" height="50px"/></td>
+            <td>{{ chaine.nomchaine}}</td>
+            <td>{{ chaine.bouquet}}</td>
+            <td>{{ chaine.recepteur}}</td>
+             <td><button ng-click="searchChaine(chaine._id);" data-toggle="modal" data-target="#chaineEditModal" class="btn btn-info btn-sm">Edit</button></td>
+              <td><button type="button" data-toggle="modal" data-target="#deleteModal">
+             <span class="glyphicon glyphicon-trash"></span></button>
+              <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="myModalLabel">Delete <strong>{{ chaine.nomchaine}}
+                                </strong></h4>
+                              </div>
+                            <div class="modal-body">
+                                <div class="alert alert-danger" role="alert">Are you sure you want to delete this chaine?</div>
+                            </div>
+                          <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                          <button type="button" class="btn btn-danger" data-ng-click="managemente.deleteChaine(chaine.nomchaine)">Delete</button>
+                        </div>
+                  </div>
+      <dir-pagination-controls
+       max-size="8"
+       direction-links="true"
+       boundary-links="true" >
+    </dir-pagination-controls>
+                </div>
+   </div> 
+           </td> 
+
+           
+        </tr>
+        
+        <!-- End: Table -->
+ 
+    </table>
+   
+    
+
+
+</div>
+ 
+
+<div id="chaineAddModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Add Chaine</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="txtName">Name Chaine</label>
+            <input type="nomchaine" class="form-control" ng-model='chaine.nomchaine' id="txtName" placeholder="Enter nom chaine">
+          </div>
+          <div class="form-group">
+            <label for="txtBouquet">Bouquet</label>
+            <input type="bouquet" class="form-control" id="bouquet" ng-model='chaine.bouquet' placeholder="Enter bouquet">
+          </div>
+          <div class="form-group">
+            <label for="txtRecepteur">Recepteur</label>
+            <input type="recepteur" class="form-control" id="txtRecepteur" ng-model='chaine.recepteur' placeholder="Enter recepteur">
+          </div>
+          <div class="form-group">
+            <label for="picture">Picture</label>
+            <input type="picture" class="form-control" id="picture" ng-model='chaine.picture' placeholder="Enter recepteur">
+          </div>
+          
+          <button type="submit" class="btn btn-default" data-ng-click="addChaine(chaine);"  data-dismiss="modal">Submit</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+    </div>
+</div>
+
+
+<div id="chaineEditModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Edit Chaine</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+      <div class="form-group">
+        <label for="txtNom">Name Chaine</label>
+        <input type="text" class="form-control" id="txtNom" ng-modal='chaine.nomchaine' placeholder="Update chaine">
+      </div>
+      <div class="form-group">
+        <label for="txtBouquet">Bouquet</label>
+        <input type="text" class="form-control" id="txtBouquet" ng-modal='chaine.bouquet' placeholder="Enter bouquet">
+      </div>
+      <div class="form-group">
+        <label for="txtRecepteur">Recepteur</label>
+        <input type="number" class="form-control" id="txtRecepteur" ng-modal='chaine.recepteur' placeholder="recepteur">
+      </div>
+
+      <div class="form-group">
+        <label for="Picture">Picture</label>
+        <input type="text" class="form-control" id="Picture" ng-modal='chaine.picture' placeholder="edit picture">
+      </div>
+      <button type="submit" class="btn btn-default" data-ng-click="updateChaine(chaine);">Submit</button>
+    </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="alert alert-warning text-center" data-ng-if="!managemente.chaines.length">
+    No chaines yet, why don't you <button type="button" ng-click="searchChaine(123456789012);" data-toggle="modal" data-target="#chaineAddModal" >
+        <strong>Add one</strong>
+      </button>?
+  </div>
+
+  <br>
+<br>
+<div>
+    <div class="col-lg-6">
+        <div class="input-group">
+            <span class="input-group-addon">Results to display:</span>
+            <input type="text" class="form-control" ng-model="number">
+        </div>
+    </div>
+</div>
+<!-- Container: Start -->
+<div class="container">
+
+    <!-- Apply Button Filter -->
+    <button type="button" ng-click="managemente.showMore(number);" class="btn btn-success">Apply Filter</button>
+
+    <!--/ Show All Button -->
+    <button type="button" ng-click="managemente.showAll();" class="btn btn-warning">Show All</button>
+    <!-- Input For Filter  -->
+
+    <!-- Simple Search Bar -->
+    <div class="navbar-form">
+           <div class="form-group">
+           <input class="form-control col-md-0" type="text" ng-model="test" placeholder="Search"/>
+        </div>
+      
+
+        <!-- Clear Button -->
+        <button type="button" ng-click="managemente.clear();" class="btn btn-default">Clear</button>
+        <!-- Advanced Search Button -->
+        <a href="/search">
+            <button type="button" class="btn btn-default">Advanced Search</button>
+        </a>
+    </div>
+  
+    <!-- Simple Search Bar /-->
+</div>
+
+
+ 
+<br>
+<br>
+  

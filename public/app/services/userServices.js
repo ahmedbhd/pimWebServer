@@ -4,7 +4,7 @@ angular.module('userServices', [])
     var userFactory = {}; // Create the userFactory object
 
     // Register users in database
-    userFactory.create = function(regData) {
+    userFactory.createUser = function(regData) {
         return $http.post('/api/users', regData);
     };
 
@@ -68,10 +68,7 @@ angular.module('userServices', [])
         return $http.get('/api/management/');
     };
 
-     userFactory.getChaines = function(dataa) {
-        return $http.get('/api/managemente/');
-    };
-
+   
     // Get user to then edit
     userFactory.getUser = function(id) {
         return $http.get('/api/edit/' + id);

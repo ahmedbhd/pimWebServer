@@ -17,8 +17,13 @@ angular.module('chaineServices', [])
     chaineFactory.getStat = function(){
        return $http.get('/api/managemente/');
     };
-
+    
+    chaineFactory.create = function(){
+        return $http.post('/api/chaines/');
+    }
 
     return chaineFactory;
 
  });
+
+

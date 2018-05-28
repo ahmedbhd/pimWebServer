@@ -11,6 +11,8 @@ html {
 }
 body {
   margin: 0;
+  background-color : #eeeeee;
+
 }
 article,
 aside,
@@ -268,13 +270,12 @@ th {
 }
 .glyphicon {
   position: relative;
-  top: 1px;
+  top: 5px;
   display: inline-block;
   font-family: 'Glyphicons Halflings';
   font-style: normal;
   font-weight: normal;
   line-height: 1;
-
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -320,6 +321,19 @@ th {
 }
 .glyphicon-user:before {
   content: "\e008";
+   font-size: 300px;
+}
+.glyphicon-user1:before {
+  content: "\e008";
+   font-size: 50px;
+}
+.glyphicon-user2:before {
+  content: "\e008";
+   font-size: 6px;
+}
+.glyphicon-user3:before {
+  content: "\e008";
+   font-size: 150px;
 }
 .glyphicon-film:before {
   content: "\e009";
@@ -1604,11 +1618,11 @@ pre code {
   
 }
 .container-chart {
-	background-color:#ffffff;
-	padding-top:50px;
-  padding-right: 1px;
-  padding-left: 15px;
-  margin-right: 1%;
+	
+	padding-top:0px;
+  padding-right: 30px;
+  padding-left: 60px;
+  margin-right: 30%;
   }
 
 }
@@ -3993,7 +4007,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .nav > li > a {
   position: relative;
   display: block;
-  padding: 10px 15px;
+  padding: 0px 15px;
 }
 .nav > li > a:hover,
 .nav > li > a:focus {
@@ -4175,7 +4189,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 }
 .navbar {
   position: relative;
-  min-height: 50px;
+  min-height: 20px;
   margin-bottom: 20px;
   border: 1px solid transparent;
 }
@@ -4283,10 +4297,10 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 }
 .navbar-brand {
   float: left;
-  height: 50px;
-  padding: 15px 15px;
-  font-size: 18px;
-  line-height: 20px;
+  height: 5px;
+  padding: 0px 2px;
+  font-size: 10px;
+  line-height: 5px;
 }
 .navbar-brand:hover,
 .navbar-brand:focus {
@@ -6765,3 +6779,10 @@ button.close {
   }
 }
 /*# sourceMappingURL=bootstrap.css.map */
+
+
+.mythumbnail {
+  width: 10%;
+  height: 10%;
+  max-width: 40px;
+}

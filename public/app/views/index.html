@@ -18,32 +18,33 @@
 
 <script src="app/app.js"></script>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.1.1/Chart.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
-<script src="/assets/js/jquery-1.12.0.min.js"></script>
+ 
+
     <!-- Angular Config/Routes -->
-    
+
     
      
 
     <script src="app/routes.js"></script>
+
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
     
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-    
+   
 
-
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-notification/0.3.6/angular-ui-notification.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-notification/0.3.6/angular-ui-notification.min.js"></script>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.js"></script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.3.1/ui-bootstrap-tpls.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
-        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+       
         <script type="text/javascript" src="https://rawgit.com/sagiegurari/simple-web-notification/master/web-notification.js"></script>
         <script type="text/javascript" src="https://rawgit.com/sagiegurari/angular-web-notification/master/angular-web-notification.js"></script>
+
  
+
     <script src="app/controllers/userCtrl.js"></script>
     <script src="app/controllers/mainCtrl.js"></script>
     <script src="app/controllers/emailCtrl.js"></script>
@@ -68,9 +69,32 @@
      <script src="app/services/recepteurServices.js"></script>
      <script src="app/services/uploadFileService.js"></script>
       
+   <script type="text/javascript">
+         $(window).on('scroll', function(){
+            if($(window).scrollTop()) {
+                $('nav').addClass('black');
+            } 
+            else {
+                $('nav').removeClass('black'); 
+            }
+         });
+     </script>
 
-
-  
+  <script type="text/javascript">
+    $(document).ready(function(){
+  $("a").on('click', function(event) {
+    if (this.hash !== "") {
+      event.preventDefault();
+      var hash = this.hash;
+      $('html, body').animate({
+        scrollTop: $(hash).offset().top
+      }, 800, function(){
+        window.location.hash = hash;
+      });
+    } 
+  });
+});
+  </script>
 
  
 
@@ -80,6 +104,7 @@
     <!-- Cascade Style Sheets -->
     <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+     <link rel="stylesheet" type="text/css" href="assets/css/main.css">
     <link rel="stylesheet" type="text/css" href="assets/css/animate.css">
     <script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js" integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+" crossorigin="anonymous"></script>
   <link href="assets/css/example.css" rel="stylesheet" />
@@ -95,12 +120,13 @@
        
     
     <title>Audimat Plug</title>
-
+   
+     <link rel="icon" href="assets/images/hsq.png">
 </head>
 
 <body ng-app="userApp"     ng-controller="mainCtrl as main" ng-show="main.loadme" ng-cloak>
   
-  <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+  
      
 
     <!-- Navigation -->
@@ -114,52 +140,68 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand page-scroll" href="/">Audimat Plug</a>
+                
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
+                  <img src="assets/images/hsq.png" width="70px" height="70px"></img>
                     <li class="hidden active">
                         <a href="#page-top"></a>
                     </li>
                     <li class="">
-                        <a class="page-scroll" href="/">Home</a>
+                        <a class="page-scroll  btn btn-x2" href="/">Home</a>
                     </li>
                     <li class="">
-                        <a ng-show="!main.isLoggedIn" id="login"  class="page-scroll" href="/login">Login</a>
+                        <a ng-show="!main.isLoggedIn" id="login"  class="page-scroll " href="/login">Login</a>
                     </li>
                     <li class="">
-                        <a ng-show="!main.isLoggedIn" class="page-scroll" href="/register">Register</a>
+                        <a ng-show="!main.isLoggedIn" class="page-scroll" href="/register">Sign Up</a>
                     </li>
                     <li class="">
                         <a ng-show="main.isLoggedIn" class="page-scroll" href="#" ng-click="main.logout();">Logout</a>
                     </li>
                     <li class="">
-                        <a ng-show="main.isLoggedIn && main.authorized"  class="page-scroll" href="/management">Management</a>
+                        <a ng-show="main.isLoggedIn && main.authorized"  class="page-scroll" href="/management">Clients</a>
                     </li>
                     <li class="">
                         <a ng-show="main.isLoggedIn && main.authorized"   class="page-scroll" href="/managemente">Chaines</a>
                     </li>
+                    <li class="">
+                        <a ng-show="main.isLoggedIn && main.authorized"   class="page-scroll" href="/clientview">Watcher1</a>
+                    </li>
+                    
+                     
                     <li class="">
                         <a ng-show="main.isLoggedIn && main.authorized"   class="page-scroll" href="/managementrecepteur">Recepteur</a>
                     </li>
                     <li class="">
                         <a ng-show="main.isLoggedIn && main.authorized"   class="page-scroll" href="/managementhistory">History</a>
                     </li>
-                     <li class="">
-                        <a ng-show="main.isLoggedIn"   class="page-scroll" href="/charts">Charts</a>
+                    <li class="">
+                        <a ng-show="main.isLoggedIn && main.authorized || main.authorized1 || main.authorized3"   class="page-scroll" href="/silver">Silver</a>
+                    </li>
+                    <li class="">
+                        <a ng-show="main.isLoggedIn && main.authorized || main.authorized2 || main.authorized3"   class="page-scroll" href="/gold">
+                            Gold</a>
                     </li>
                     
-                       <li class="">
-                        <a ng-show="main.isLoggedIn && main.authorized"   class="page-scroll" href="/usermanage">Clients</a>
+                    <li class="">
+                        <a ng-show="main.isLoggedIn && main.authorized || main.authorized3"   class="page-scroll" href="/platinium">Platinium</a>
+                    </li>
+                     <li class="">
+                        <a ng-show="main.isLoggedIn && main.authorized"   class="page-scroll" href="/usermanage">Watcher</a>
                     </li>
                     <li class="">
                         <a ng-show="main.isLoggedIn" class="page-scroll" href="/profile">Hello {{ main.username }}</a>
                     </li>
+                    <li class="">
+                        <a ng-show="main.isLoggedIn && main.authorized4" class="page-scroll" href="/demandeabonnement">Subscribe Abonnement</a>
+                    </li>
                     <li class="" id="notification_li" ng-show="main.isLoggedIn && main.authorized">
                         
-                        <a href="#" id="notificationLink"><i class="far fa-bell"></i><span id="notification_count">3</span></a>
+                        <a href="#" id="notificationLink"><i class="far fa-bell"></i><span id="notification_count">1</span></a>
                         <div id="notificationContainer" data-ng-controller="NotificationsController">
             <div id="notificationTitle">Notifications Title</div>
             <div id="notificationsBody" class="notifications">
@@ -191,22 +233,51 @@
     <header ng-show="main.home">
         <div class="container">
             <div class="intro-text">
-                <div class="intro-lead-in">Audimat Plug</div>
-                <div class="intro-heading">Welcome to Audimat Plug</div>
-                <a ng-show="!main.isLoggedIn"  href="/login" class="page-scroll btn btn-xl">Sign In</a>
-                <a ng-show="!main.isLoggedIn" href="/register" class="page-scroll btn twitterbtn">Register</a>
+               <div class="intro-heading">Welcome to Rec Stats</div>
+                <div class="intro-lead-in">REC Stats</div>
+                
+                <a ng-show="!main.isLoggedIn"  href="/login" class="page-scroll btn btn-x2">Sign In</a>
+                <a ng-show="!main.isLoggedIn" href="/register" class="page-scroll btn btn-x2">Sign Up</a>
                 <a ng-show="main.isLoggedIn" href="#" ng-click="main.logout();" class="page-scroll btn btn-xl">Logout</a>
                 <a ng-show="main.isLoggedIn && main.authorized" href="/management" class="page-scroll btn facebookbtn">View</a>
                 
-                
+                <div class="home-content__scroll">
+                <a href="#services" class="scroll-link smoothscroll">
+                    <span>Scroll Down</span>
+                </a>
+            </div>
+
+            <div class="home-content__line"></div>
 
             </div>
         </div>
     </header>
-
-
     
-    <section id="services">
+
+    <section class="company-heading intro-type" id="parallax-one" ng-show="main.home">
+  <div class="container">
+    <div class="row product-title-info">
+      <div class="col-md-12">
+        <h1>Rec Stats</h1>
+        <a class="ct-btn-scroll ct-js-btn-scroll" href="#section2"><img alt="Arrow Down Icon" src="https://www.solodev.com/assets/anchor/arrow-down.png"></a>
+      </div>
+    </div>
+  </div>
+  <div class="parallax" id="parallax-cta" style="background-image:url(https://www.solodev.com/assets/anchor/company-hero2.jpg);"></div>
+</section>
+<div class="main" ng-show="main.home">
+  <section id="section2">
+    <div class="container jumbo">
+      <div class="jumbotron">
+        <h2>Audience TV</h2>
+        <p>WebCorpCo is all about making sure your marketing stack is in alignment with your company as well as the customers you serve. There is no 'one size fits all' approach to marketing. Every business is unique, customers are unique, and your marketing should be as well.</p>
+        <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
+      </div>
+    </div>
+  </section>
+</div>
+    
+    <section id="services" class="bg-light-graye">
         <div class="container">
                 
             <div class="row">
@@ -214,10 +285,35 @@
                 <!-- Angular View -->
                 <div ng-view></div>
                 <!-- Angular View -->
+            
 
-            </div>
+        </div>
         </div>
     </section>
+      <section id="servicess" ng-show="main.home">
+        <div class="container">
+                
+            <div class="row">
+             
+                
+                <!-- Angular View -->
+                  <div class="col-md-4 text-center">
+                   <img src="assets/images/apple.png" width="80px" height="80px">
+                   <h2>Audience</h2>
+               </div>
+               <div class="col-md-4 text-center" ng-hide="managemente">
+                   <img src="assets/images/atom.png" width="80px" height="80px">
+                   <h2>Joomla</h2>
+               </div>
+               <div class="col-md-4 text-center" ng-hide="managemente">
+                   <img src="assets/images/mozilla.png" width="80px" height="80px">
+                   <h2>Atom</h2>
+               </div>
+
+        </div>
+        </div>
+    </section>
+ 
 
     <!-- Portfolio Grid Section -->
     <section ng-show="main.home" id="portfolio" class="bg-light-gray">
@@ -245,17 +341,7 @@
                     <h4 class="service-heading">Github</h4>
                     
                 </div>
-                <form class="notification-form" ng-controller="NotificationsController">
-            <div class="form-group">
-                <label for="title">Title</label>
-                <input type="text" class="form-control" id="title" placeholder="Notification Title" ng-model="title" />
-            </div>
-            <div class="form-group">
-                <label for="message">Notification Text</label>
-                <textarea class="form-control" rows="3" id="message" placeholder="Notification Text" ng-model="text"></textarea>
-            </div>
-            <button type="button" class="show-button btn btn-primary" notification-title="title" notification-text="text">Show Notification</button>
-        </form>
+             
             </div>
         </div>
     </section>
@@ -316,19 +402,34 @@
         </div>
     </div>
      
-    <!-- BootstrapJS Modal -->
+
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    
+     
     <script src="assets/js/bootstrap.js"></script>
      <script src="assets/js/dirPagination.js"></script>
-     
+     <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+<script>
+      var socket = io.connect('http://localhost:8088');
+           // WHEN we receive the notification event execute the notifyMe function
+           socket.on('output', function (data) {
+             
+          
+               
+
+
+             notifyMe(data.message);
+            
+           });
+</script>
      <script>
          $(document).ready(function () {
     $("#notificationLink").click(function () {
-        $("#notificationContainer").fadeToggle(300);
+        $("#notificationContainer").fadeToggle(100);
         $("#notification_count").fadeOut("slow");
         $('#notificationLink > i.fa-bell').addClass('fa-bell-o');
         $('#notificationLink > i.fa-bell').removeClass('fa-bell');
@@ -363,174 +464,205 @@
 
          }
 
-
+        
           // Connect to the server
-           var socket = io.connect('http://localhost:8088');
-           // WHEN we receive the notification event execute the notifyMe function
-           socket.on('notification', function (data) {
-             notifyMe(data.message);
-           });
-            socket.on('output', function (data) {
-             notifyMe(data);
-           });
+         
         return false;
     });
        $(document).click(function () {
         $("#notificationContainer").hide();
-    });
+       });
 
     //Popup on click
     $("#notificationContainer").click(function () {
         return false;
-    });
+      });
 
    
 
 });
 
      </script>
-  <script>
-          $(function() {
+
+<script>
+   $(function() {     
+
+ var Recepteur = class  {
+     constructor(id_rec, client, fam_region, fam_size, fam_age) {
+         this.id_rec = id_rec;
+         this.client = client;
+         this.fam_region = fam_region;
+         this.fam_size = fam_size;
+         this.fam_age = fam_age;
+      }
+    }
+ var recepteurs = [Recepteur];
     $.ajax({
         type: "GET",
         url: "/api/managementhistory/",
         cache: false,
         dataType: "json",
         success: function (result) {
+                
+                $.ajax ({  
+                  type: "GET",
+                  url: "/api/managementrec/",
+                  dataType: 'json',
+                  success: function(data){
+                    
+                 
+                   
+                     for (var i=0; i<data.length; i++){
+                        
+                        var a = data[i].id_rec;
+                        var b = data[i].client;
+                        var c = data[i].fam_region;
+                        var d = data[i].fam_size;
+                        var e = data[i].fam_age;
+                         var p = new Recepteur(a, b, c, d, e);
+                     
+                       recepteurs.push(p);
+                       console.log(recepteurs);
 
-            function notifyMe(message) {
-           // Let's check if the browser supports notifications
-           if (!("Notification" in window)) {
-             alert("This browser does not support notifications");
-           }
-
-           // Let's check whether notification permissions have already been granted
-           else if (Notification.permission === "granted") {
-             // If it's okay let's create a notification
-             var notification = new Notification(message);
-           }
-
-           // Otherwise, we need to ask the user for permission
-           else if (Notification.permission !== 'denied') {
-             Notification.requestPermission(function (permission) {
-
-               // We store the authorization information
-               if(!('permission' in Notification)) {
-                 Notification.permission = permission;
-               }
-
-               // If the user accepts, let's create a notification
-               if (permission === "granted") {
-                 var notification = new Notification(message);
-               }
-             });
-           }
+                    }
+                    
+                   
+                  }
+                
 
 
-         }
 
+                }); 
 
-            var socket = io.connect('http://localhost:8088');
-           // WHEN we receive the notification event execute the notifyMe function
-           
-            socket.on('output', function (data) {
-             notifyMe(data);
+                   function check(id){
+                    
+                        for (var i =0; i<recepteurs.length; i++){
+                            if (Recepteur.id_rec = id){
+                                  
+                              return true;
+                            }
+                        }
+                       
+                    
+                       return false;
+                   } 
+               var Historique = class  {
+               constructor(recepteur, bouquet, channel, program) {
+                 
+                    this.recepteur = recepteur;
+                    this.bouquet = bouquet;
+                    this.channel = channel;
+                    this.program = program;
+                  
+                }
+              
 
-           });
-
-           
+              }
+              var HistoriqueChaine = class {
+                constructor(nomchaine, nbtele, nom_bouquet, nb_minutes){
+                  
+                    this.nomchaine = nomchaine;
+                    this.nbtele = nbtele;
+                    this.nom_bouquet = nom_bouquet;
+                    this.nb_minutes = nb_minutes;
+                }
+              }
+             
             var labeldata = [];
+           
             var chartData = [];
+            var ch = [];
+            var count = 0;
+            var ch1 = [Historique];
+            var ch2 = [HistoriqueChaine];
+            
+            var ch2 = [];
+         
+            
             for(var i =0; i < result.length; i++)
             {
                 
-                labeldata.push(result[i].channel);
-                chartData.push(result[i].recepteur)
+                 var b = result[i].recepteur;
+                 var c = result[i].bouquet;
+                 var d = result[i].channel;
+                 var e = result[i].program;
+               
+                  var s = new Historique(b, c, d, e);
+                  if(check(Recepteur)){
+
+
+                  ch1.push(s);
+                       }
+                    
+                  console.log(ch1);
+                
+                 
+                 
+
             }
 
-
-            var ctx = document.getElementById("myChart");
-            var myChart = new Chart (ctx, {
-                type : "line",
-                data: {
-                    labels: labeldata,
-
-                    datasets: [
-                        {
-                            label: "Recepteur",
-                            fill: false,
-                            lineTension: 0.1,
-                            backgroundColor: "rgba(255,99,132,0.4)",
-                            borderColor: "rgba(255,99,132,1)",
-                            borderCapStyle: 'butt',
-                            borderDash: [],
-                            borderDashOffset: 0.0,
-                            borderJoinStyle: 'miter',
-                            pointBorderColor: "rgba(75,192,192,1)",
-                            pointBackgroundColor: "#FF0000",
-                            pointBorderWidth: 1,
-                            pointHoverRadius: 5,
-                            pointHoverBackgroundColor: "rgba(255,99,132,0.4)",
-                            pointHoverBorderColor: "rgba(255,99,132,1)",
-                            pointHoverBorderWidth: 5,
-                            pointRadius: 1,
-                            pointHitRadius: 5,
-                            data: chartData
-                        },
-
-                    ]
-
+            for (var i = 0; i< ch1.length; i++){
+                
+                for (var j = 0;  j < ch1.length; j++){
+                 if(ch1[i].channel == ch1[j].channel){
+                  count++;
                 }
-            });
-        }
-    })
-})
-        </script>
-        <script>
-          $(function() {
-    $.ajax({
-        type: "GET",
-        url: "/api/managementhistory/",
-        cache: false,
-        dataType: "json",
-        success: function (result) {
-           
-            var labeldata = [];
-            var chartData = [];
-            for(var i =0; i < result.length; i++)
-            {
-                labeldata.push(result[i].channel);
-                chartData.push(result[i].recepteur)
+                
+               }
+              
+              if(!ch.includes(ch1[i].channel)){
+                ch.push(ch1[i].channel);
+                ch2.push(new HistoriqueChaine(ch1[i].channel, count));
+                console.log(ch2);
+              } 
+              count =0;  
+               
             }
 
+            for (var i=1; i<ch2.length; i++){
+              labeldata.push(ch2[i].nomchaine);
+              
+              
+            }
+            for (var i=1;  i<ch2.length; i++){
+              
+            
+             chartData.push(ch2[i].nbtele);
+                
+            }
+           
+            var ctx = document.getElementById("doughnut");
 
-            var ctx = document.getElementById("myChart1");
             var myChart = new Chart (ctx, {
                 type : "pie",
+                theme: "light",
                 data: {
                     labels: labeldata,
-
+                  
                     datasets: [
                         {
-                            label: "Recepteur",
+                            
+                            label: "Chaines par Nombre de Vues",
                             fill: false,
-                            lineTension: 0.1,
-                            backgroundColor: "rgba(255,99,132,1)",
+                            lineTension: 0,
+                            backgroundColor: ["#226264", "#228b22", "#6c7e42", "#be7174", "#5aafcf", "#c70000", "#ffa500", "#1be3c6", "#b76e79", "#1be3c6", "#725b7d", "#4c3a6e"],
                             borderColor: "rgba(75,192,192,1)",
                             borderCapStyle: 'butt',
                             borderDash: [],
-                            borderDashOffset: 0.0,
-                            borderJoinStyle: 'miter',
+                            borderDashOffset: 0,
+                            borderJoinStyle: 'bevel',
                             pointBorderColor: "rgba(75,192,192,1)",
                             pointBackgroundColor: "#0000",
-                            pointBorderWidth: 1,
-                            pointHoverRadius: 5,
+                            pointBorderWidth: 0,
+                            pointHoverRadius: 0,
                             pointHoverBackgroundColor: "rgba(75,192,192,1)",
                             pointHoverBorderColor: "rgba(220,220,220,1)",
-                            pointHoverBorderWidth: 5,
-                            pointRadius: 1,
-                            pointHitRadius: 5,
+                            pointHoverBorderWidth: 0,
+                            pointRadius: 0,
+                            pointHitRadius: 0,
                             data: chartData
+
+
                         },
 
                     ]
@@ -540,10 +672,579 @@
         }
     })
 })
+  
         </script>
+<script>
+   $(function() {     
 
-  <script>
-          $(function() {
+ var Recepteur = class  {
+     constructor(id_rec, client, fam_region, fam_size, fam_age) {
+         this.id_rec = id_rec;
+         this.client = client;
+         this.fam_region = fam_region;
+         this.fam_size = fam_size;
+         this.fam_age = fam_age;
+      }
+    }
+ var recepteurs = [Recepteur];
+    $.ajax({
+        type: "GET",
+        url: "/api/managementhistory/",
+        cache: false,
+        dataType: "json",
+        success: function (result) {
+                
+                $.ajax ({  
+                  type: "GET",
+                  url: "/api/managementrec/",
+                  dataType: 'json',
+                  success: function(data){
+                    
+                 
+                   
+                     for (var i=0; i<data.length; i++){
+                        
+                        var a = data[i].id_rec;
+                        var b = data[i].client;
+                        var c = data[i].fam_region;
+                        var d = data[i].fam_size;
+                        var e = data[i].fam_age;
+                         var p = new Recepteur(a, b, c, d, e);
+                     
+                       recepteurs.push(p);
+                       console.log(recepteurs);
+
+                    }
+                    
+                   
+                  }
+                
+
+
+
+                }); 
+
+                   function check(id){
+                    
+                        for (var i =0; i<recepteurs.length; i++){
+                            if (Recepteur.id_rec = id){
+                                  
+                              return true;
+                            }
+                        }
+                       
+                    
+                       return false;
+                   } 
+               var Historique = class  {
+               constructor(recepteur, bouquet, channel, program) {
+                 
+                    this.recepteur = recepteur;
+                    this.bouquet = bouquet;
+                    this.channel = channel;
+                    this.program = program;
+                  
+                }
+              
+
+              }
+              var HistoriqueChaine = class {
+                constructor(nom_bouquet, nb_minutes){
+                  
+                 
+                    this.nom_bouquet = nom_bouquet;
+                    this.nb_minutes = nb_minutes;
+                }
+              }
+             
+            var labeldata = [];
+           
+            var chartData = [];
+            var ch = [];
+            var count = 0;
+            var ch1 = [Historique];
+            var ch2 = [HistoriqueChaine];
+            
+            var ch2 = [];
+         
+            
+            for(var i =0; i < result.length; i++)
+            {
+                
+                 var b = result[i].recepteur;
+                 var c = result[i].bouquet;
+                 var d = result[i].channel;
+                 var e = result[i].program;
+               
+                  var s = new Historique(b, c, d, e);
+                  if(check(Recepteur)){
+
+
+                  ch1.push(s);
+                       }
+                    
+                  console.log(ch1);
+                
+                 
+                 
+
+            }
+
+            for (var i = 0; i< ch1.length; i++){
+                
+                for (var j = 0;  j < ch1.length; j++){
+                 if(ch1[i].bouquet == ch1[j].bouquet){
+                  count++;
+                }
+                
+               }
+              
+              if(!ch.includes(ch1[i].bouquet)){
+                ch.push(ch1[i].bouquet);
+                ch2.push(new HistoriqueChaine(ch1[i].bouquet, count));
+                console.log(ch2);
+              } 
+              count =0;  
+               
+            }
+
+            for (var i=1; i<ch2.length; i++){
+              labeldata.push(ch2[i].nom_bouquet);
+              
+              
+            }
+            for (var i=1;  i<ch2.length; i++){
+              
+            
+             chartData.push(ch2[i].nb_minutes);
+                
+            }
+           
+            var ctx = document.getElementById("myChart1");
+
+            var myChart = new Chart (ctx, {
+                type : "bar",
+                theme: "light",
+                data: {
+                    labels: labeldata,
+                  
+                    datasets: [
+                        {
+                            
+                            label: "Bouquets par Nombre de Vues",
+                            fill: false,
+                            lineTension: 0,
+                            backgroundColor: ["#ffc3a0", "#228b22", "#6c7e42", "#be7174", "#5aafcf"],
+                            borderColor: "rgba(75,192,192,1)",
+                            borderCapStyle: 'butt',
+                            borderDash: [],
+                            borderDashOffset: 0,
+                            borderJoinStyle: 'bevel',
+                            pointBorderColor: "rgba(75,192,192,1)",
+                            pointBackgroundColor: "#0000",
+                            pointBorderWidth: 0,
+                            pointHoverRadius: 0,
+                            pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                            pointHoverBorderColor: "rgba(220,220,220,1)",
+                            pointHoverBorderWidth: 0,
+                            pointRadius: 0,
+                            pointHitRadius: 0,
+                            data: chartData
+
+
+                        },
+
+                    ]
+
+                }
+            });
+        }
+    })
+})
+  
+        </script>
+<script>
+   $(function() {     
+
+ var Recepteur = class  {
+     constructor(id_rec, client, fam_region, fam_size, fam_age) {
+         this.id_rec = id_rec;
+         this.client = client;
+         this.fam_region = fam_region;
+         this.fam_size = fam_size;
+         this.fam_age = fam_age;
+      }
+    }
+ var recepteurs = [Recepteur];
+    $.ajax({
+        type: "GET",
+        url: "/api/managementhistory/",
+        cache: false,
+        dataType: "json",
+        success: function (result) {
+                
+                $.ajax ({  
+                  type: "GET",
+                  url: "/api/managementrec/",
+                  dataType: 'json',
+                  success: function(data){
+                    
+                 
+                   
+                     for (var i=0; i<data.length; i++){
+                        
+                        var a = data[i].id_rec;
+                        var b = data[i].client;
+                        var c = data[i].fam_region;
+                        var d = data[i].fam_size;
+                        var e = data[i].fam_age;
+                         var p = new Recepteur(a, b, c, d, e);
+                     
+                       recepteurs.push(p);
+                       console.log(recepteurs);
+
+                    }
+                    
+                   
+                  }
+                
+
+
+
+                }); 
+
+                   function check(id){
+                    
+                        for (var i =0; i<recepteurs.length; i++){
+                            if (Recepteur.id_rec = id){
+                                  
+                              return true;
+                            }
+                        }
+                       
+                    
+                       return false;
+                   } 
+               var Historique = class  {
+               constructor(recepteur, bouquet, channel, program) {
+                 
+                    this.recepteur = recepteur;
+                    this.bouquet = bouquet;
+                    this.channel = channel;
+                    this.program = program;
+                  
+                }
+              
+
+              }
+              var HistoriqueChaine = class {
+                constructor(program, nbtele){
+                  
+                    this.program = program;
+                    this.nbtele = nbtele;
+                  
+                }
+              }
+             
+            var labeldata = [];
+           
+            var chartData = [];
+            var ch = [];
+            var count = 0;
+            var ch1 = [Historique];
+            var ch2 = [HistoriqueChaine];
+            
+            var ch2 = [];
+         
+            
+            for(var i =0; i < result.length; i++)
+            {
+                
+                 var b = result[i].recepteur;
+                 var c = result[i].bouquet;
+                 var d = result[i].channel;
+                 var e = result[i].program;
+               
+                  var s = new Historique(b, c, d, e);
+                  if(check(Recepteur)){
+
+
+                  ch1.push(s);
+                       }
+                    
+                  console.log(ch1);
+                
+                 
+                 
+
+            }
+
+            for (var i = 0; i< ch1.length; i++){
+                
+                for (var j = 0;  j < ch1.length; j++){
+                 if(ch1[i].program == ch1[j].program){
+                  count++;
+                }
+                
+               }
+              
+              if(!ch.includes(ch1[i].program)){
+                ch.push(ch1[i].program);
+                ch2.push(new HistoriqueChaine(ch1[i].program, count));
+                console.log(ch2);
+              } 
+              count =0;  
+               
+            }
+
+            for (var i=1; i<ch2.length; i++){
+              labeldata.push(ch2[i].program);
+              
+              
+            }
+            for (var i=1;  i<ch2.length; i++){
+              
+            
+             chartData.push(ch2[i].nbtele);
+                
+            }
+           
+            var ctx = document.getElementById("myChart2");
+
+            var myChart = new Chart (ctx, {
+                type : "doughnut",
+                theme: "light",
+                data: {
+                    labels: labeldata,
+                  
+                    datasets: [
+                        {
+                            
+                            label: "Programme par Nombre de Vues",
+                            fill: false,
+                            lineTension: 0,
+                            backgroundColor: ["#728fcc", "#31395a", "#0e2f44", "#49639a", "#5aafcf", "#191970", "#c70000", "#7abdb8", "#4d4c59", "#1be3c6", "#b76e79", "#67b48a", "#392742"],
+                            borderColor: "rgba(75,192,192,1)",
+                            borderCapStyle: 'butt',
+                            borderDash: [],
+                            borderDashOffset: 0,
+                            borderJoinStyle: 'bevel',
+                            pointBorderColor: "rgba(75,192,192,1)",
+                            pointBackgroundColor: "#0000",
+                            pointBorderWidth: 0,
+                            pointHoverRadius: 0,
+                            pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                            pointHoverBorderColor: "rgba(220,220,220,1)",
+                            pointHoverBorderWidth: 0,
+                            pointRadius: 0,
+                            pointHitRadius: 0,
+                            data: chartData
+
+
+                        },
+
+                    ]
+
+                }
+            });
+        }
+    })
+})
+  
+        </script>
+   <script>
+   $(function() {     
+
+ var Recepteur = class  {
+     constructor(id_rec, client, fam_region, fam_size, fam_age) {
+         this.id_rec = id_rec;
+         this.client = client;
+         this.fam_region = fam_region;
+         this.fam_size = fam_size;
+         this.fam_age = fam_age;
+      }
+    }
+ var recepteurs = [Recepteur];
+    $.ajax({
+        type: "GET",
+        url: "/api/managementhistory/",
+        cache: false,
+        dataType: "json",
+        success: function (result) {
+                
+                $.ajax ({  
+                  type: "GET",
+                  url: "/api/managementrec/",
+                  dataType: 'json',
+                  success: function(data){
+                    
+                 
+                   
+                     for (var i=0; i<data.length; i++){
+                        
+                        var a = data[i].id_rec;
+                        var b = data[i].client;
+                        var c = data[i].fam_region;
+                        var d = data[i].fam_size;
+                        var e = data[i].fam_age;
+                         var p = new Recepteur(a, b, c, d, e);
+                     
+                       recepteurs.push(p);
+                       console.log(recepteurs);
+
+                    }
+                    
+                   
+                  }
+                
+
+
+
+                }); 
+
+                   function check(id){
+                    
+                        for (var i =0; i<recepteurs.length; i++){
+                            if (Recepteur.id_rec = id){
+                                  
+                              return true;
+                            }
+                        }
+                       
+                    
+                       return false;
+                   } 
+               var Historique = class  {
+               constructor(recepteur, bouquet, channel, program) {
+                 
+                    this.recepteur = recepteur;
+                    this.bouquet = bouquet;
+                    this.channel = channel;
+                    this.program = program;
+                  
+                }
+              
+
+              }
+              var HistoriqueChaine = class {
+                constructor(nomchaine, nbtele, nom_bouquet, nb_minutes){
+                  
+                    this.nomchaine = nomchaine;
+                    this.nbtele = nbtele;
+                    this.nom_bouquet = nom_bouquet;
+                    this.nb_minutes = nb_minutes;
+                }
+              }
+             
+            var labeldata = [];
+           
+            var chartData = [];
+            var ch = [];
+            var count = 0;
+            var ch1 = [Historique];
+            var ch2 = [HistoriqueChaine];
+            
+            var ch2 = [];
+         
+            
+            for(var i =0; i < result.length; i++)
+            {
+                
+                 var b = result[i].recepteur;
+                 var c = result[i].bouquet;
+                 var d = result[i].channel;
+                 var e = result[i].program;
+               
+                  var s = new Historique(b, c, d, e);
+                  if(check(Recepteur)){
+
+
+                  ch1.push(s);
+                       }
+                    
+                  console.log(ch1);
+                
+                 
+                 
+
+            }
+
+            for (var i = 0; i< ch1.length; i++){
+                
+                for (var j = 0;  j < ch1.length; j++){
+                 if(ch1[i].channel == ch1[j].channel){
+                  count++;
+                }
+                
+               }
+              
+              if(!ch.includes(ch1[i].channel)){
+                ch.push(ch1[i].channel);
+                ch2.push(new HistoriqueChaine(ch1[i].channel, count));
+                console.log(ch2);
+              } 
+              count =0;  
+               
+            }
+
+            for (var i=1; i<ch2.length; i++){
+              labeldata.push(ch2[i].nomchaine);
+              
+              
+            }
+            for (var i=1;  i<ch2.length; i++){
+              
+            
+             chartData.push(ch2[i].nbtele);
+                
+            }
+           
+            var ctx = document.getElementById("myChart3");
+
+            var myChart = new Chart (ctx, {
+                type : "bar",
+                theme: "light",
+                data: {
+                    labels: labeldata,
+                  
+                    datasets: [
+                        {
+                            
+                            label: "Chaines par Nombre de Vues",
+                            fill: false,
+                            lineTension: 0,
+                            backgroundColor: ["#226264", "#228b22", "#6c7e42", "#be7174", "#5aafcf", "#49639a", "#5aafcf", "#191970", "#c70000", "#7abdb8", "#4d4c59", "#1be3c6", "#b76e79", "#67b48a"],
+                            borderColor: "rgba(75,192,192,1)",
+                            borderCapStyle: 'butt',
+                            borderDash: [],
+                            borderDashOffset: 0,
+                            borderJoinStyle: 'bevel',
+                            pointBorderColor: "rgba(75,192,192,1)",
+                            pointBackgroundColor: "#0000",
+                            pointBorderWidth: 0,
+                            pointHoverRadius: 0,
+                            pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                            pointHoverBorderColor: "rgba(220,220,220,1)",
+                            pointHoverBorderWidth: 0,
+                            pointRadius: 0,
+                            pointHitRadius: 0,
+                            data: chartData
+
+
+                        },
+
+                    ]
+
+                }
+            });
+        }
+    })
+})
+  
+        </script>
+        <script>
+          $(document).ready(function () {
+
     $.ajax({
         type: "GET",
         url: "/api/managementhistory/",
@@ -553,14 +1254,56 @@
            
             var labeldata = [];
             var chartData = [];
-            for(var i =0; i < result.length; i++)
+            
+            for(var i = 0; i < result.length; i++)
             {
-                labeldata.push(result[i].channel);
-                chartData.push(result[i].recepteur)
+              var date0 = result[i].date;
+              date1 = new Date(date0);
+              console.log(date1);
+              for (var j=0; j < date0; j++){
+            
+
+
+                var date2 = date0[j];
+            //  date3 = new Date(date2);
+              console.log(date2);
+             
+            function dateDiff(date1, date3){
+              var diff = {}                           // Initialisation du retour
+                 var tmp = date3 - date1;
+             
+                tmp = Math.floor(tmp/1000);             // Nombre de secondes entre les 2 dates
+                diff.sec = tmp % 60;                    // Extraction du nombre de secondes
+             
+                tmp = Math.floor((tmp-diff.sec)/60);    // Nombre de minutes (partie entière)
+                diff.min = tmp % 60;                    // Extraction du nombre de minutes
+             
+                tmp = Math.floor((tmp-diff.min)/60);    // Nombre d'heures (entières)
+                diff.hour = tmp % 24;                   // Extraction du nombre d'heures
+                 
+                tmp = Math.floor((tmp-diff.hour)/24);   // Nombre de jours restants
+                diff.day = tmp;
+               
+                return diff;
+           }
+            
+             diff = dateDiff(date1, date3);
+          
+               
+               labeldata.push(result[i].channel);
+                chartData.push(diff.min);
+                console.log(diff.min);    
+              
+              }
+
+           
             }
+        //    var diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000);
+              
+             
+ 
 
-
-            var ctx = document.getElementById("myChart2");
+            var ctx = document.getElementById("myChart18");
             var myChart = new Chart (ctx, {
                 type : "bar",
                 data: {
@@ -568,10 +1311,10 @@
 
                     datasets: [
                         {
-                            label: "Recepteur",
+                            label: "Chaine par nombre visite par Jours",
                             fill: false,
                             lineTension: 0.1,
-                            backgroundColor: "rgba(172,194,132,0.4)",
+                            backgroundColor: ["#fdf5e6"],
                             borderColor: "rgba(75,192,192,1)",
                             borderCapStyle: 'butt',
                             borderDash: [],
@@ -593,12 +1336,17 @@
 
                 }
             });
+
         }
     })
-})
+
+});
         </script>
-       <script>
-          $(function() {
+
+
+          <script>
+          $(document).ready(function () {
+    $("#prog").click(function() {
     $.ajax({
         type: "GET",
         url: "/api/managementhistory/",
@@ -608,25 +1356,35 @@
            
             var labeldata = [];
             var chartData = [];
-            for(var i =0; i < result.length; i++)
+            var lst = [];
+            var lste = [];
+            var counts = {};
+            for(var i = 0; i < result.length; i++)
             {
-                labeldata.push(result[i].bouquet);
-                chartData.push(result[i].recepteur)
+               var num = result[i].program;
+                counts[num] = counts[num] ? counts[num] + 1 : 1;
+               labeldata.push(result[i].program);
+                chartData.push(counts[num]);
+                console.log(counts[num]);    
+           
             }
+        //    var diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000);
+              
+             
+ 
 
-
-            var ctx = document.getElementById("myChart3");
+            var ctx = document.getElementById("myChart16");
             var myChart = new Chart (ctx, {
-                type : "line",
+                type : "pie",
                 data: {
                     labels: labeldata,
 
                     datasets: [
                         {
-                            label: "Recepteur",
+                            label: "Programme par nombre visite",
                             fill: false,
                             lineTension: 0.1,
-                            backgroundColor: "rgba(172,194,132,0.4)",
+                            backgroundColor: ["yellow", "green", "#49639a", "#5aafcf", "#191970", "#c70000", "#7abdb8", "#4d4c59", "#1be3c6", "#b76e79", "#67b48a"],
                             borderColor: "rgba(75,192,192,1)",
                             borderCapStyle: 'butt',
                             borderDash: [],
@@ -648,10 +1406,1707 @@
 
                 }
             });
+
         }
     })
 })
+});
         </script>
+        <script>
+   $(function() {     
+
+ var Recepteur = class  {
+     constructor(id_rec, client, fam_region, fam_size, fam_age) {
+         this.id_rec = id_rec;
+         this.client = client;
+         this.fam_region = fam_region;
+         this.fam_size = fam_size;
+         this.fam_age = fam_age;
+      }
+    }
+ var recepteurs = [Recepteur];
+    $.ajax({
+        type: "GET",
+        url: "/api/managementhistory/",
+        cache: false,
+        dataType: "json",
+        success: function (result) {
+                
+                $.ajax ({  
+                  type: "GET",
+                  url: "/api/managementrec/",
+                  dataType: 'json',
+                  success: function(data){
+                    
+                 
+                   
+                     for (var i=0; i<data.length; i++){
+                        
+                        var a = data[i].id_rec;
+                        var b = data[i].client;
+                        var c = data[i].fam_region;
+                        var d = data[i].fam_size;
+                        var e = data[i].fam_age;
+                         var p = new Recepteur(a, b, c, d, e);
+                     
+                       recepteurs.push(p);
+                       console.log(recepteurs);
+
+                    }
+                    
+                   
+                  }
+                
+
+
+
+                }); 
+
+                   function check(id){
+                    
+                        for (var i =0; i<recepteurs.length; i++){
+                            if (Recepteur.id_rec = id){
+                                  
+                              return true;
+                            }
+                        }
+                       
+                    
+                       return false;
+                   } 
+               var Historique = class  {
+               constructor(recepteur, bouquet, channel, program) {
+                 
+                    this.recepteur = recepteur;
+                    this.bouquet = bouquet;
+                    this.channel = channel;
+                    this.program = program;
+                  
+                }
+              
+
+              }
+              var HistoriqueChaine = class {
+                constructor(nomchaine, nbtele, nom_bouquet, nb_minutes){
+                  
+                    this.nomchaine = nomchaine;
+                    this.nbtele = nbtele;
+                    this.nom_bouquet = nom_bouquet;
+                    this.nb_minutes = nb_minutes;
+                }
+              }
+             
+            var labeldata = [];
+           
+            var chartData = [];
+            var ch = [];
+            var count = 0;
+            var ch1 = [Historique];
+            var ch2 = [HistoriqueChaine];
+            
+            var ch2 = [];
+         
+            
+            for(var i =0; i < result.length; i++)
+            {
+                
+                 var b = result[i].recepteur;
+                 var c = result[i].bouquet;
+                 var d = result[i].channel;
+                 var e = result[i].program;
+               
+                  var s = new Historique(b, c, d, e);
+                  if(check(Recepteur)){
+
+
+                  ch1.push(s);
+                       }
+                    
+                  console.log(ch1);
+                
+                 
+                 
+
+            }
+
+            for (var i = 0; i< ch1.length; i++){
+                
+                for (var j = 0;  j < ch1.length; j++){
+                 if(ch1[i].channel == ch1[j].channel){
+                  count++;
+                }
+                
+               }
+              
+              if(!ch.includes(ch1[i].channel)){
+                ch.push(ch1[i].channel);
+                ch2.push(new HistoriqueChaine(ch1[i].channel, count));
+                console.log(ch2);
+              } 
+              count =0;  
+               
+            }
+
+            for (var i=1; i<ch2.length; i++){
+              labeldata.push(ch2[i].nomchaine);
+              
+              
+            }
+            for (var i=1;  i<ch2.length; i++){
+              
+            
+             chartData.push(ch2[i].nbtele);
+                
+            }
+           
+            var ctx = document.getElementById("myChart4");
+
+            var myChart = new Chart (ctx, {
+                type : "line",
+                theme: "light",
+                data: {
+                    labels: labeldata,
+                  
+                    datasets: [
+                        {
+                            
+                            label: "Chaines par Nombre de Vues",
+                            fill: false,
+                            lineTension: 0,
+                            backgroundColor: ["#226264", "#228b22","#49639a", "#5aafcf", "#191970", "#c70000", "#7abdb8", "#4d4c59", "#1be3c6", "#b76e79", "#67b48a", "#5aafcf"],
+                            borderColor: "rgba(75,192,192,1)",
+                            borderCapStyle: 'butt',
+                            borderDash: [],
+                            borderDashOffset: 0,
+                            borderJoinStyle: 'bevel',
+                            pointBorderColor: "rgba(75,192,192,1)",
+                            pointBackgroundColor: "#0000",
+                            pointBorderWidth: 0,
+                            pointHoverRadius: 0,
+                            pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                            pointHoverBorderColor: "rgba(220,220,220,1)",
+                            pointHoverBorderWidth: 0,
+                            pointRadius: 0,
+                            pointHitRadius: 0,
+                            data: chartData
+
+
+                        },
+
+                    ]
+
+                }
+            });
+        }
+    })
+})
+  
+</script>
+   <script>
+   $(function() {     
+
+ var Recepteur = class  {
+     constructor(id_rec, client, fam_region, fam_size, fam_age) {
+         this.id_rec = id_rec;
+         this.client = client;
+         this.fam_region = fam_region;
+         this.fam_size = fam_size;
+         this.fam_age = fam_age;
+      }
+    }
+ var recepteurs = [Recepteur];
+    $.ajax({
+        type: "GET",
+        url: "/api/managementhistory/",
+        cache: false,
+        dataType: "json",
+        success: function (result) {
+                
+                $.ajax ({  
+                  type: "GET",
+                  url: "/api/managementrec/",
+                  dataType: 'json',
+                  success: function(data){
+                    
+                 
+                   
+                     for (var i=0; i<data.length; i++){
+                        
+                        var a = data[i].id_rec;
+                        var b = data[i].client;
+                        var c = data[i].fam_region;
+                        var d = data[i].fam_size;
+                        var e = data[i].fam_age;
+                         var p = new Recepteur(a, b, c, d, e);
+                     
+                       recepteurs.push(p);
+                       console.log(recepteurs);
+
+                    }
+                    
+                   
+                  }
+                
+
+
+
+                }); 
+
+                   function check(id){
+                    
+                        for (var i =0; i<recepteurs.length; i++){
+                            if (Recepteur.id_rec = id){
+                                  
+                              return true;
+                            }
+                        }
+                       
+                    
+                       return false;
+                   } 
+               var Historique = class  {
+               constructor(recepteur, bouquet, channel, program, duree) {
+                 
+                    this.recepteur = recepteur;
+                    this.bouquet = bouquet;
+                    this.channel = channel;
+                    this.program = program;
+                    this.duree = duree;
+                  
+                }
+              
+
+              }
+              var HistoriqueChaine = class {
+                constructor(nomchaine, nb_minutes){
+                  
+                    this.nomchaine = nomchaine;
+                    this.nb_minutes = nb_minutes;
+                }
+              }
+             
+            var labeldata = [];
+           
+            var chartData = [];
+            var ch = [];
+            var count = 0;
+            var ch1 = [Historique];
+            var ch2 = [HistoriqueChaine];
+            var totalDuree = 0;
+            var nbMinTot = 0;
+            var ch2 = [];
+         
+            
+            for(var i =0; i < result.length; i++)
+            {
+                
+                 var a = result[i].recepteur;
+                 var b = result[i].bouquet;
+                 var c = result[i].channel;
+                 var d = result[i].program;
+                 var e = result[i].duree;
+               
+                  var s = new Historique(a, b, c, d, e);
+                  if(check(Recepteur)){
+
+
+                  ch1.push(s);
+                       }
+                    
+                  console.log(ch1);
+                
+                 
+                 
+
+            }
+
+            for (var i = 0; i< ch1.length; i++){
+                
+                for (var j = 0;  j < ch1.length; j++){
+                 if(ch1[i].channel == ch1[j].channel){
+                  totalDuree = totalDuree + ch1[j].duree;
+                  nbMinTot = Math.floor(totalDuree / 60);
+                }
+                
+               }
+              
+              if(!ch.includes(ch1[i].channel)){
+                ch.push(ch1[i].channel);
+                ch2.push(new HistoriqueChaine(ch1[i].channel, nbMinTot));
+                console.log(ch2);
+              } 
+              totalDuree =0;  
+               
+            }
+
+            for (var i=1; i<ch2.length; i++){
+              labeldata.push(ch2[i].nomchaine);
+              
+              
+            }
+            for (var i=1;  i<ch2.length; i++){
+              
+            
+             chartData.push(ch2[i].nb_minutes);
+                
+            }
+           
+            var ctx = document.getElementById("myChart6");
+
+            var myChart = new Chart (ctx, {
+                type : "pie",
+                theme: "light",
+                data: {
+                    labels: labeldata,
+                  
+                    datasets: [
+                        {
+                            
+                            label: "Chaines par Nombre de Minutes",
+                            fill: false,
+                            lineTension: 0,
+                            backgroundColor: ["#6c7e42", "#be7174", "#49639a", "#5aafcf", "#191970", "#c70000", "#7abdb8", "#4d4c59", "#1be3c6", "#b76e79", "#67b48a", "#ffff00", "#5aafcf"],
+                            borderColor: "rgba(75,192,192,1)",
+                            borderCapStyle: 'butt',
+                            borderDash: [],
+                            borderDashOffset: 0,
+                            borderJoinStyle: 'bevel',
+                            pointBorderColor: "rgba(75,192,192,1)",
+                            pointBackgroundColor: "#0000",
+                            pointBorderWidth: 0,
+                            pointHoverRadius: 0,
+                            pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                            pointHoverBorderColor: "rgba(220,220,220,1)",
+                            pointHoverBorderWidth: 0,
+                            pointRadius: 0,
+                            pointHitRadius: 0,
+                            data: chartData
+
+
+                        },
+
+                    ]
+
+                }
+            });
+        }
+    })
+})
+  
+</script>      
+   <script>
+   $(function() {     
+
+ var Recepteur = class  {
+     constructor(id_rec, client, fam_region, fam_size, fam_age) {
+         this.id_rec = id_rec;
+         this.client = client;
+         this.fam_region = fam_region;
+         this.fam_size = fam_size;
+         this.fam_age = fam_age;
+      }
+    }
+ var recepteurs = [Recepteur];
+    $.ajax({
+        type: "GET",
+        url: "/api/managementhistory/",
+        cache: false,
+        dataType: "json",
+        success: function (result) {
+                
+                $.ajax ({  
+                  type: "GET",
+                  url: "/api/managementrec/",
+                  dataType: 'json',
+                  success: function(data){
+                    
+                 
+                   
+                     for (var i=0; i<data.length; i++){
+                        
+                        var a = data[i].id_rec;
+                        var b = data[i].client;
+                        var c = data[i].fam_region;
+                        var d = data[i].fam_size;
+                        var e = data[i].fam_age;
+                         var p = new Recepteur(a, b, c, d, e);
+                     
+                       recepteurs.push(p);
+                       console.log(recepteurs);
+
+                    }
+                    
+                   
+                  }
+                
+
+
+
+                }); 
+
+                   function check(id){
+                    
+                        for (var i =0; i<recepteurs.length; i++){
+                            if (Recepteur.id_rec = id){
+                                  
+                              return true;
+                            }
+                        }
+                       
+                    
+                       return false;
+                   } 
+               var Historique = class  {
+               constructor(recepteur, bouquet, channel, program, duree) {
+                 
+                    this.recepteur = recepteur;
+                    this.bouquet = bouquet;
+                    this.channel = channel;
+                    this.program = program;
+                    this.duree = duree;
+                  
+                }
+              
+
+              }
+              var HistoriqueChaine = class {
+                constructor(program, nb_minutes){
+                  
+                    this.program = program;
+                    this.nb_minutes = nb_minutes;
+                }
+              }
+             
+            var labeldata = [];
+           
+            var chartData = [];
+            var ch = [];
+            var count = 0;
+            var ch1 = [Historique];
+            var ch2 = [HistoriqueChaine];
+            var totalDuree = 0;
+            var nbMinTot = 0;
+            var ch2 = [];
+         
+            
+            for(var i =0; i < result.length; i++)
+            {
+                
+                 var a = result[i].recepteur;
+                 var b = result[i].bouquet;
+                 var c = result[i].channel;
+                 var d = result[i].program;
+                 var e = result[i].duree;
+               
+                  var s = new Historique(a, b, c, d, e);
+                  if(check(Recepteur)){
+
+
+                  ch1.push(s);
+                       }
+                    
+                  console.log(ch1);
+                
+                 
+                 
+
+            }
+
+            for (var i = 0; i< ch1.length; i++){
+                
+                for (var j = 0;  j < ch1.length; j++){
+                 if(ch1[i].program == ch1[j].program){
+                  totalDuree = totalDuree + ch1[j].duree;
+                  nbMinTot = Math.floor(totalDuree / 60);
+                }
+                
+               }
+              
+              if(!ch.includes(ch1[i].program)){
+                ch.push(ch1[i].program);
+                ch2.push(new HistoriqueChaine(ch1[i].program, nbMinTot));
+                console.log(ch2);
+              } 
+              totalDuree =0;  
+               
+            }
+
+            for (var i=1; i<ch2.length; i++){
+              labeldata.push(ch2[i].program);
+              
+              
+            }
+            for (var i=1;  i<ch2.length; i++){
+              
+            
+             chartData.push(ch2[i].nb_minutes);
+                
+            }
+           
+            var ctx = document.getElementById("myChart7");
+
+            var myChart = new Chart (ctx, {
+                type : "bar",
+                theme: "light",
+                data: {
+                    labels: labeldata,
+                  
+                    datasets: [
+                        {
+                            
+                            label: "Program par Nombre de Minutes",
+                            fill: false,
+                            lineTension: 0,
+                            backgroundColor: ["#ffc3a0", "#ff0000", "#49639a", "#5aafcf", "#191970", "#c70000", "#7abdb8", "#4d4c59", "#1be3c6", "#b76e79", "#67b48a"],
+                            borderColor: "rgba(75,192,192,1)",
+                            borderCapStyle: 'butt',
+                            borderDash: [],
+                            borderDashOffset: 0,
+                            borderJoinStyle: 'bevel',
+                            pointBorderColor: "rgba(75,192,192,1)",
+                            pointBackgroundColor: "#0000",
+                            pointBorderWidth: 0,
+                            pointHoverRadius: 0,
+                            pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                            pointHoverBorderColor: "rgba(220,220,220,1)",
+                            pointHoverBorderWidth: 0,
+                            pointRadius: 0,
+                            pointHitRadius: 0,
+                            data: chartData
+
+
+                        },
+
+                    ]
+
+                }
+            });
+        }
+    })
+})
+  
+</script>      
+   <script>
+   $(function() {     
+
+ var Recepteur = class  {
+     constructor(id_rec, client, fam_region, fam_size, fam_age) {
+         this.id_rec = id_rec;
+         this.client = client;
+         this.fam_region = fam_region;
+         this.fam_size = fam_size;
+         this.fam_age = fam_age;
+      }
+    }
+ var recepteurs = [Recepteur];
+    $.ajax({
+        type: "GET",
+        url: "/api/managementhistory/",
+        cache: false,
+        dataType: "json",
+        success: function (result) {
+                
+                $.ajax ({  
+                  type: "GET",
+                  url: "/api/managementrec/",
+                  dataType: 'json',
+                  success: function(data){
+                    
+                 
+                   
+                     for (var i=0; i<data.length; i++){
+                        
+                        var a = data[i].id_rec;
+                        var b = data[i].client;
+                        var c = data[i].fam_region;
+                        var d = data[i].fam_size;
+                        var e = data[i].fam_age;
+                         var p = new Recepteur(a, b, c, d, e);
+                     
+                       recepteurs.push(p);
+                       console.log(recepteurs);
+
+                    }
+                    
+                   
+                  }
+                
+
+
+
+                }); 
+
+                   function check(id){
+                    
+                        for (var i =0; i<recepteurs.length; i++){
+                            if (Recepteur.id_rec = id){
+                                  
+                              return true;
+                            }
+                        }
+                       
+                    
+                       return false;
+                   } 
+               var Historique = class  {
+               constructor(recepteur, bouquet, channel, program, duree) {
+                 
+                    this.recepteur = recepteur;
+                    this.bouquet = bouquet;
+                    this.channel = channel;
+                    this.program = program;
+                    this.duree = duree;
+                  
+                }
+              
+
+              }
+              var HistoriqueChaine = class {
+                constructor(bouquet, nb_minutes){
+                  
+                    this.bouquet = bouquet;
+                    this.nb_minutes = nb_minutes;
+                }
+              }
+             
+            var labeldata = [];
+           
+            var chartData = [];
+            var ch = [];
+            var count = 0;
+            var ch1 = [Historique];
+            var ch2 = [HistoriqueChaine];
+            var totalDuree = 0;
+            var nbMinTot = 0;
+            var ch2 = [];
+         
+            
+            for(var i =0; i < result.length; i++)
+            {
+                
+                 var a = result[i].recepteur;
+                 var b = result[i].bouquet;
+                 var c = result[i].channel;
+                 var d = result[i].program;
+                 var e = result[i].duree;
+               
+                  var s = new Historique(a, b, c, d, e);
+                  if(check(Recepteur)){
+
+
+                  ch1.push(s);
+                       }
+                    
+                  console.log(ch1);
+                
+                 
+                 
+
+            }
+
+            for (var i = 0; i< ch1.length; i++){
+                
+                for (var j = 0;  j < ch1.length; j++){
+                 if(ch1[i].bouquet == ch1[j].bouquet){
+                  totalDuree = totalDuree + ch1[j].duree;
+                  nbMinTot = Math.floor(totalDuree / 60);
+                }
+                
+               }
+              
+              if(!ch.includes(ch1[i].bouquet)){
+                ch.push(ch1[i].bouquet);
+                ch2.push(new HistoriqueChaine(ch1[i].bouquet, nbMinTot));
+                console.log(ch2);
+              } 
+              totalDuree =0;  
+               
+            }
+
+            for (var i=1; i<ch2.length; i++){
+              labeldata.push(ch2[i].bouquet);
+              
+              
+            }
+            for (var i=1;  i<ch2.length; i++){
+              
+            
+             chartData.push(ch2[i].nb_minutes);
+                
+            }
+           
+            var ctx = document.getElementById("myChart8");
+
+            var myChart = new Chart (ctx, {
+                type : "bar",
+                theme: "light",
+                data: {
+                    labels: labeldata,
+                  
+                    datasets: [
+                        {
+                            
+                            label: "Bouquet par Nb Minutes",
+                            fill: false,
+                            lineTension: 0,
+                            backgroundColor: ["#ffc3a0", "#ff0000", "#ffc3a0", "#9bb2f0", "#ff00ff"],
+                            borderColor: "rgba(75,192,192,1)",
+                            borderCapStyle: 'butt',
+                            borderDash: [],
+                            borderDashOffset: 0,
+                            borderJoinStyle: 'bevel',
+                            pointBorderColor: "rgba(75,192,192,1)",
+                            pointBackgroundColor: "#0000",
+                            pointBorderWidth: 0,
+                            pointHoverRadius: 0,
+                            pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                            pointHoverBorderColor: "rgba(220,220,220,1)",
+                            pointHoverBorderWidth: 0,
+                            pointRadius: 0,
+                            pointHitRadius: 0,
+                            data: chartData
+
+
+                        },
+
+                    ]
+
+                }
+            });
+        }
+    })
+})
+  
+</script> 
+<script>
+
+window.onload = function() {    
+
+ var Recepteur = class  {
+     constructor(id_rec, client, fam_region, fam_size, fam_age) {
+         this.id_rec = id_rec;
+         this.client = client;
+         this.fam_region = fam_region;
+         this.fam_size = fam_size;
+         this.fam_age = fam_age;
+      }
+    }
+ var recepteurs = [Recepteur];
+    $.ajax({
+        type: "GET",
+        url: "/api/managementhistory/",
+        cache: false,
+        dataType: "json",
+        success: function (result) {
+                
+                $.ajax ({  
+                  type: "GET",
+                  url: "/api/managementrec/",
+                  dataType: 'json',
+                  success: function(data){
+                    
+                 
+                   
+                     for (var i=0; i<data.length; i++){
+                        
+                        var a = data[i].id_rec;
+                        var b = data[i].client;
+                        var c = data[i].fam_region;
+                        var d = data[i].fam_size;
+                        var e = data[i].fam_age;
+                         var p = new Recepteur(a, b, c, d, e);
+                     
+                       recepteurs.push(p);
+                       console.log(recepteurs);
+
+                    }
+                    
+                   
+                  }
+                
+
+
+
+                }); 
+
+                   function check(id){
+                    
+                        for (var i =0; i<recepteurs.length; i++){
+                            if (Recepteur.id_rec = id){
+                                  
+                              return true;
+                            }
+                        }
+                       
+                    
+                       return false;
+                   } 
+               var Historique = class  {
+               constructor(recepteur, bouquet, channel, program, duree) {
+                 
+                    this.recepteur = recepteur;
+                    this.bouquet = bouquet;
+                    this.channel = channel;
+                    this.program = program;
+                    this.duree = duree;
+                  
+                }
+              
+
+              }
+              var HistoriqueChaine = class {
+                constructor(bouquet, nb_minutes){
+                  
+                    this.bouquet = bouquet;
+                    this.nb_minutes = nb_minutes;
+                }
+              }
+             
+            var labeldata = [];
+           
+            var chartData = [];
+            var ch = [];
+            var count = 0;
+            var ch1 = [Historique];
+            var ch2 = [HistoriqueChaine];
+            var totalDuree = 0;
+            var nbMinTot = 0;
+            var ch2 = [];
+         
+            
+            for(var i =0; i < result.length; i++)
+            {
+                
+                 var a = result[i].recepteur;
+                 var b = result[i].bouquet;
+                 var c = result[i].channel;
+                 var d = result[i].program;
+                 var e = result[i].duree;
+               
+                  var s = new Historique(a, b, c, d, e);
+                  if(check(Recepteur)){
+
+
+                  ch1.push(s);
+                       }
+                    
+                  console.log(ch1);
+                
+                 
+                 
+
+            }
+
+            for (var i = 0; i< ch1.length; i++){
+                
+                for (var j = 0;  j < ch1.length; j++){
+                 if(ch1[i].bouquet == ch1[j].bouquet){
+                  totalDuree = totalDuree + ch1[j].duree;
+                  nbMinTot = Math.floor(totalDuree / 60);
+                }
+                
+               }
+              
+              if(!ch.includes(ch1[i].bouquet)){
+                ch.push(ch1[i].bouquet);
+                ch2.push(new HistoriqueChaine(ch1[i].bouquet, nbMinTot));
+                console.log(ch2);
+              } 
+              totalDuree =0;  
+               
+            }
+
+            for (var i=1; i<ch2.length; i++){
+              labeldata.push(ch2[i].bouquet);
+              
+              
+            }
+            for (var i=1;  i<ch2.length; i++){
+              
+            
+             chartData.push(ch2[i].nb_minutes);
+                
+            }
+           
+            
+        var chart = new CanvasJS.Chart("chartContainer", {
+            theme: "light2", // "light1", "light2", "dark1", "dark2"
+            exportEnabled: true,
+            animationEnabled: true,
+            title: {
+                text: labeldata
+            },
+            data: [{
+                label: "bouquet minutes",
+                type: "pie",
+                startAngle: 25,
+                toolTipContent: "<b>{label}</b>: {chartData}%",
+                showInLegend: "true",
+                legendText: "{label}",
+                indexLabelFontSize: 16,
+                indexLabel: "{label} - {chartData}%",
+                dataPoints: [
+                  {y: 20, label: chartData},
+                  {y: 20, label: chartData}
+                ]
+            }]
+        });
+        chart.render();
+        }
+    })
+
+  }
+</script>
+  <script>
+   $(function() {     
+
+ var Recepteur = class  {
+     constructor(id_rec, client, fam_region, fam_size, fam_age) {
+         this.id_rec = id_rec;
+         this.client = client;
+         this.fam_region = fam_region;
+         this.fam_size = fam_size;
+         this.fam_age = fam_age;
+      }
+    }
+ var recepteurs = [Recepteur];
+    $.ajax({
+        type: "GET",
+        url: "/api/managementhistory/",
+        cache: false,
+        dataType: "json",
+        success: function (result) {
+                
+                $.ajax ({  
+                  type: "GET",
+                  url: "/api/managementrec/",
+                  dataType: 'json',
+                  success: function(data){
+                    
+                 
+                   
+                     for (var i=0; i<data.length; i++){
+                        
+                        var a = data[i].id_rec;
+                        var b = data[i].client;
+                        var c = data[i].fam_region;
+                        var d = data[i].fam_size;
+                        var e = data[i].fam_age;
+                         var p = new Recepteur(a, b, c, d, e);
+                     
+                       recepteurs.push(p);
+                       console.log(recepteurs);
+
+                    }
+                    
+                   
+                  }
+                
+
+
+
+                }); 
+
+                   function check(id){
+                    
+                        for (var i =0; i<recepteurs.length; i++){
+                            if (Recepteur.id_rec = id){
+                                  
+                              return true;
+                            }
+                        }
+                       
+                    
+                       return false;
+                   } 
+               var Historique = class  {
+               constructor(recepteur, bouquet, channel, program, duree) {
+                 
+                    this.recepteur = recepteur;
+                    this.bouquet = bouquet;
+                    this.channel = channel;
+                    this.program = program;
+                    this.duree = duree;
+                  
+                }
+              
+
+              }
+              var HistoriqueChaine = class {
+                constructor(chaine, nb_seconde){
+                  
+                    this.chaine = chaine;
+                    this.nb_seconde = nb_seconde;
+                }
+              }
+             
+            var labeldata = [];
+           
+            var chartData = [];
+            var ch = [];
+            var count = 0;
+            var ch1 = [Historique];
+            var ch2 = [HistoriqueChaine];
+            var totalDuree = 0;
+            var nbMinTot = 0;
+            var ch2 = [];
+         
+            
+            for(var i =0; i < result.length; i++)
+            {
+                
+                 var a = result[i].recepteur;
+                 var b = result[i].bouquet;
+                 var c = result[i].channel;
+                 var d = result[i].program;
+                 var e = result[i].duree;
+               
+                  var s = new Historique(a, b, c, d, e);
+                  if(check(Recepteur)){
+
+
+                  ch1.push(s);
+                       }
+                    
+                  console.log(ch1);
+                
+                 
+                 
+
+            }
+
+            for (var i = 0; i< ch1.length; i++){
+                
+                for (var j = 0;  j < ch1.length; j++){
+                 if(ch1[i].channel == ch1[j].channel){
+                  totalDuree = totalDuree + ch1[j].duree;
+                 
+                }
+                
+               }
+              
+              if(!ch.includes(ch1[i].channel)){
+                ch.push(ch1[i].channel);
+                ch2.push(new HistoriqueChaine(ch1[i].channel, totalDuree));
+                console.log(ch2);
+              } 
+              totalDuree =0;  
+               
+            }
+
+            for (var i=1; i<ch2.length; i++){
+              labeldata.push(ch2[i].chaine);
+              
+              
+            }
+            for (var i=1;  i<ch2.length; i++){
+              
+            
+             chartData.push(ch2[i].nb_seconde);
+                
+            }
+           
+            var ctx = document.getElementById("myChart9");
+
+            var myChart = new Chart (ctx, {
+                type : "bar",
+                theme: "light",
+                data: {
+                    labels: labeldata,
+                  
+                    datasets: [
+                        {
+                            
+                            label: "channel par Nb Secondes",
+                            fill: false,
+                            lineTension: 0,
+                            backgroundColor: ["#ffc3a0", "#49639a", "#5aafcf", "#191970", "#c70000", "#7abdb8", "#4d4c59", "#1be3c6", "#b76e79", "#67b48a", "#ffc3a0", "#9bb2f0", "#ff00ff"],
+                            borderColor: "rgba(75,192,192,1)",
+                            borderCapStyle: 'butt',
+                            borderDash: [],
+                            borderDashOffset: 0,
+                            borderJoinStyle: 'bevel',
+                            pointBorderColor: "rgba(75,192,192,1)",
+                            pointBackgroundColor: "#0000",
+                            pointBorderWidth: 0,
+                            pointHoverRadius: 0,
+                            pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                            pointHoverBorderColor: "rgba(220,220,220,1)",
+                            pointHoverBorderWidth: 0,
+                            pointRadius: 0,
+                            pointHitRadius: 0,
+                            data: chartData
+
+
+                        },
+
+                    ]
+
+                }
+            });
+        }
+    })
+})
+  
+</script> 
+  <script>
+   $(function() {     
+
+
+ var Recepteur = class  {
+     constructor(id_rec, client, fam_region, fam_size, fam_age) {
+         this.id_rec = id_rec;
+         this.client = client;
+         this.fam_region = fam_region;
+         this.fam_size = fam_size;
+         this.fam_age = fam_age;
+      }
+    }
+ var recepteurs = [Recepteur];
+    $.ajax({
+        type: "GET",
+        url: "/api/managementhistory/",
+        cache: false,
+        dataType: "json",
+        success: function (result) {
+                
+                $.ajax ({  
+                  type: "GET",
+                  url: "/api/managementrec/",
+                  dataType: 'json',
+                  success: function(data){
+                    
+                 
+                   
+                     for (var i=0; i<data.length; i++){
+                        
+                        var a = data[i].id_rec;
+                        var b = data[i].client;
+                        var c = data[i].fam_region;
+                        var d = data[i].fam_size;
+                        var e = data[i].fam_age;
+                         var p = new Recepteur(a, b, c, d, e);
+                     
+                       recepteurs.push(p);
+                       console.log(recepteurs);
+
+                    }
+                    
+                   
+                  }
+                
+
+
+
+                }); 
+
+                   function check(id){
+                    
+                        for (var i =0; i<recepteurs.length; i++){
+                            if (Recepteur.id_rec = id){
+                                  
+                              return true;
+                            }
+                        }
+                       
+                    
+                       return false;
+                   } 
+               var Historique = class  {
+               constructor(recepteur, bouquet, channel, program, duree) {
+                 
+                    this.recepteur = recepteur;
+                    this.bouquet = bouquet;
+                    this.channel = channel;
+                    this.program = program;
+                    this.duree = duree;
+                  
+                }
+              
+
+              }
+              var HistoriqueChaine = class {
+                constructor(program, nb_seconde){
+                  
+                    this.program = program;
+                    this.nb_seconde = nb_seconde;
+                }
+              }
+             
+            var labeldata = [];
+           
+            var chartData = [];
+            var ch = [];
+            var count = 0;
+            var ch1 = [Historique];
+            var ch2 = [HistoriqueChaine];
+            var totalDuree = 0;
+            var nbMinTot = 0;
+            var ch2 = [];
+         
+            
+            for(var i =0; i < result.length; i++)
+            {
+                
+                 var a = result[i].recepteur;
+                 var b = result[i].bouquet;
+                 var c = result[i].channel;
+                 var d = result[i].program;
+                 var e = result[i].duree;
+               
+                  var s = new Historique(a, b, c, d, e);
+                  if(check(Recepteur)){
+
+
+                  ch1.push(s);
+                       }
+                    
+                  console.log(ch1);
+                
+                 
+                 
+
+            }
+
+            for (var i = 0; i< ch1.length; i++){
+                
+                for (var j = 0;  j < ch1.length; j++){
+                 if(ch1[i].program == ch1[j].program){
+                  totalDuree = totalDuree + ch1[j].duree;
+                 
+                }
+                
+               }
+              
+              if(!ch.includes(ch1[i].program)){
+                ch.push(ch1[i].program);
+                ch2.push(new HistoriqueChaine(ch1[i].program, totalDuree));
+                console.log(ch2);
+              } 
+              totalDuree =0;  
+               
+            }
+
+            for (var i=1; i<ch2.length; i++){
+              labeldata.push(ch2[i].program);
+              
+              
+            }
+            for (var i=1;  i<ch2.length; i++){
+              
+            
+             chartData.push(ch2[i].nb_seconde);
+                
+            }
+           
+            var ctx = document.getElementById("myChart10");
+
+            var myChart = new Chart (ctx, {
+                type : "doughnut",
+                theme: "light",
+                data: {
+                    labels: labeldata,
+                  
+                    datasets: [
+                        {
+                            
+                            label: "Program par Nb Secondes",
+                            fill: false,
+                            lineTension: 0,
+                            backgroundColor: ["#226264", "#228b22", "#6c7e42", "#be7174", "#5aafcf", "#c70000", "#ffa500", "#1be3c6", "#191970", "#c70000", "#7abdb8", "#4d4c59", "#1be3c6", "#b76e79", "#67b48a"],
+                            borderColor: "rgba(75,192,192,1)",
+                            borderCapStyle: 'butt',
+                            borderDash: [],
+                            borderDashOffset: 0,
+                            borderJoinStyle: 'bevel',
+                            pointBorderColor: "rgba(75,192,192,1)",
+                            pointBackgroundColor: "#0000",
+                            pointBorderWidth: 0,
+                            pointHoverRadius: 0,
+                            pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                            pointHoverBorderColor: "rgba(220,220,220,1)",
+                            pointHoverBorderWidth: 0,
+                            pointRadius: 0,
+                            pointHitRadius: 0,
+                            data: chartData
+
+
+                        },
+
+                    ]
+
+                }
+            });
+        }
+    })
+})
+  
+</script> 
+ 
+ <script>
+   
+    function myFunctionRegion() {
+        var e = document.getElementById("region");
+        var strUser = e.options[e.selectedIndex].value;
+        console.log(strUser);
+    
+           loadRegion(strUser);
+        
+    };
+function loadRegion(strUser){
+    console.log(strUser);
+ var Recepteur = class  {
+     constructor(id_rec, client, fam_region, fam_size, fam_age) {
+         this.id_rec = id_rec;
+         this.client = client;
+         this.fam_region = fam_region;
+         this.fam_size = fam_size;
+         this.fam_age = fam_age;
+      }
+      get Client(){
+            return this.client;
+      }
+    }
+ var recepteurs = Recepteur[];
+    $.ajax({
+        type: "GET",
+        url: "/api/managementhistory/",
+        cache: false,
+        dataType: "json",
+        success: function (result) {
+                
+                $.ajax ({  
+                  type: "GET",
+                  url: "/api/managementrec/",
+                  dataType: 'json',
+                  success: function(data){
+                    
+                 
+                   
+                     for (var i=0; i<data.length; i++){
+                        
+                        var a = data[i].id_rec;
+                        var b = data[i].client;
+                        var c = data[i].fam_region;
+                        var d = data[i].fam_size;
+                        var e = data[i].fam_age;
+                         var p = new Recepteur(a, b, c, d, e);
+                     
+                       recepteurs.push(p);
+                      console.log(recepteurs);
+
+                    }
+                    
+                 //  recepteurs = data;
+                  }
+                
+
+
+
+                }); 
+
+                   function checkRegion(id, strUser){
+                            for (var i =0; i<recepteurs.length; i++){
+                            console.log(recepteurs[i].client);
+                            
+                            if (recepteurs[i].id_rec == id){
+                             
+
+                               switch (strUser){
+                                  case "South":{
+                                    if (r == "South")
+                                    return true;
+                                    break;
+                                    }
+                                  case "North":{
+                                    if (r == "North")
+                                    return true;
+                                    break;
+                                    }
+                                  case "West":{
+                                    if (r == "West")
+                                    return true;
+                                    break;
+                                    }
+                                  case "East":{
+                                    if (r == "East")
+                                    return true;
+                                    break;
+                                  }
+                                  
+                               }   
+                        
+                            }
+                        }
+                       return false;
+                    }
+                       
+                   
+               var Historique = class  {
+               constructor(recepteur, bouquet, channel, program, duree) {
+                 
+                    this.recepteur = recepteur;
+                    this.bouquet = bouquet;
+                    this.channel = channel;
+                    this.program = program;
+                    this.duree = duree;
+                  
+                }
+              
+
+              }
+              var HistoriqueChaine = class {
+                constructor(program, nb_seconde){
+                  
+                    this.program = program;
+                    this.nb_seconde = nb_seconde;
+                }
+              }
+             
+            var labeldata = [];
+           
+            var chartData = [];
+            var ch = [];
+            var count = 0;
+            var ch1 = [Historique];
+            var ch2 = [HistoriqueChaine];
+            var totalDuree = 0;
+            var nbMinTot = 0;
+            var ch2 = [];
+         
+            
+            for(var i =0; i < result.length; i++)
+            {
+                
+                 var a = result[i].recepteur;
+                 var b = result[i].bouquet;
+                 var c = result[i].channel;
+                 var d = result[i].program;
+                 var e = result[i].duree;
+               
+                  var s = new Historique(a, b, c, d, e);
+                  if(checkRegion(a, strUser)){
+
+
+                  ch1.push(s);
+                }
+                    
+                  
+                
+                 
+                 
+
+            }
+              console.log(ch1);
+            for (var i = 0; i< ch1.length; i++){
+                
+                for (var j = 0;  j < ch1.length; j++){
+                 if(ch1[i].program == ch1[j].program){
+                  totalDuree = totalDuree + ch1[j].duree;
+                 
+                }
+                
+               }
+              
+              if(!ch.includes(ch1[i].program)){
+                ch.push(ch1[i].program);
+                ch2.push(new HistoriqueChaine(ch1[i].program, totalDuree));
+                console.log(ch2);
+              } 
+              totalDuree =0;  
+               
+            }
+
+            for (var i=1; i<ch2.length; i++){
+              labeldata.push(ch2[i].program);
+              
+              
+            }
+            for (var i=1;  i<ch2.length; i++){
+              
+            
+             chartData.push(ch2[i].nb_seconde);
+                
+            }
+           
+            var ctx = document.getElementById("myChart11");
+
+            var myChart = new Chart (ctx, {
+                type : "doughnut",
+                theme: "light",
+                data: {
+                    labels: labeldata,
+                  
+                    datasets: [
+                        {
+                            
+                            label: "Program par Nb Secondes",
+                            fill: false,
+                            lineTension: 0,
+                            backgroundColor: ["#ffc3a0", "#ff0000", "#ffc3a0", "#9bb2f0", "#ff00ff", "#49639a", "#5aafcf", "#191970", "#c70000", "#7abdb8", "#4d4c59", "#1be3c6", "#b76e79", "#67b48a"],
+                            borderColor: "rgba(75,192,192,1)",
+                            borderCapStyle: 'butt',
+                            borderDash: [],
+                            borderDashOffset: 0,
+                            borderJoinStyle: 'bevel',
+                            pointBorderColor: "rgba(75,192,192,1)",
+                            pointBackgroundColor: "#0000",
+                            pointBorderWidth: 0,
+                            pointHoverRadius: 0,
+                            pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                            pointHoverBorderColor: "rgba(220,220,220,1)",
+                            pointHoverBorderWidth: 0,
+                            pointRadius: 0,
+                            pointHitRadius: 0,
+                            data: chartData
+
+
+                        },
+
+                    ]
+
+                }
+            });
+        }
+    })
+}
+  
+</script> 
+ <script>
+    $(function() {     
+ 
+ 
+
+     $.ajax({
+         type: "GET",
+         url: "/api/managementhistory/",
+         cache: false,
+         dataType: "json",
+         success: function (result) {
+                 
+                  
+ 
+                    /* function check(id){
+                     
+                         for (var i =0; i<recepteurs.length; i++){
+                             if (Recepteur.id_rec = id){
+                                   
+                               return true;
+                             }
+                         }
+                        
+                     
+                        return false;
+                    }  */
+                    function calculateorder() {
+
+                        
+
+                        url1 = "http://192.168.1.101:5000/channel";    
+                       
+
+                        var tab = new Array();
+                        for (var i =0; i<result.length ; i++){
+                            tab.push(result[i]);
+                        }
+
+                        var xmlhttp;
+                        xmlhttp = new XMLHttpRequest();
+
+                        xmlhttp.onreadystatechange = function() {
+                            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                                alert(xmlhttp.responseText);
+                                console.log(xmlhttp.responseText);
+                            }
+                        }
+
+                        xmlhttp.open("POST", url1, true);
+                        xmlhttp.setRequestHeader("Content-Type", "application/json");
+                        xmlhttp.send(JSON.stringify(tab));
+                        
+                        }
+
+                        calculateorder();
+                
+            
+
+            
+            for (var i = 0; i< ch1.length; i++){
+                
+                for (var j = 0;  j < ch1.length; j++){
+                 if(ch1[i].program == ch1[j].program){
+                  totalDuree = totalDuree + ch1[j].duree;
+                 
+                }
+                
+               }
+              
+              if(!ch.includes(ch1[i].program)){
+                ch.push(ch1[i].program);
+                ch2.push(new HistoriqueChaine(ch1[i].program, totalDuree));
+                console.log(ch2);
+              } 
+              totalDuree =0;  
+               
+            }
+
+            for (var i=1; i<ch2.length; i++){
+              labeldata.push(ch2[i].program);
+              
+              
+            }
+            for (var i=1;  i<ch2.length; i++){
+              
+            
+             chartData.push(ch2[i].nb_seconde);
+                
+            }
+           
+            var ctx = document.getElementById("myChart15");
+
+            var myChart = new Chart (ctx, {
+                type : "doughnut",
+                theme: "light",
+                data: {
+                    labels: labeldata,
+                  
+                    datasets: [
+                        {
+                            
+                            label: "Program par Nb Secondes",
+                            fill: false,
+                            lineTension: 0,
+                            backgroundColor: ["#ffc3a0", "#ff0000", "#ffc3a0", "#9bb2f0", "#ff00ff", "#49639a", "#5aafcf", "#191970", "#c70000", "#7abdb8", "#4d4c59", "#1be3c6", "#b76e79", "#67b48a"],
+                            borderColor: "rgba(75,192,192,1)",
+                            borderCapStyle: 'butt',
+                            borderDash: [],
+                            borderDashOffset: 0,
+                            borderJoinStyle: 'bevel',
+                            pointBorderColor: "rgba(75,192,192,1)",
+                            pointBackgroundColor: "#0000",
+                            pointBorderWidth: 0,
+                            pointHoverRadius: 0,
+                            pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                            pointHoverBorderColor: "rgba(220,220,220,1)",
+                            pointHoverBorderWidth: 0,
+                            pointRadius: 0,
+                            pointHitRadius: 0,
+                            data: chartData
+
+
+                        },
+
+                    ]
+
+                }
+            });
+ 
+             
+         }
+     })
+ })
+   
+ </script> 
 </body>
 
 </html>

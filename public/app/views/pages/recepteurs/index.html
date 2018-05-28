@@ -34,7 +34,7 @@
 
 <div class="navbar-form">
         <div class="form-group">
-           <input class="form-control col-md-0" ng-change="recepteurmanagement.figureOutItemsToDisplay()"  type="text" ng-model="test" placeholder="Search"/>
+           <input class="form-control col-md-0" ng-change="loadData()"  type="text" ng-model="test" placeholder="Search"/>
           
         </div>
       
@@ -74,35 +74,32 @@
     <!-- Start: Table -->
     <table class="table">
         <tr>
-            <th ng-click="sort('recepteur')">Recepteur
-            <span class="glyphicon sort-icon" ng-show="sortKey=='recepteur'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+            <th ng-click="sort('id_rec')">Recepteur
+            <span class="glyphicon sort-icon" ng-show="sortKey=='id_rec'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
             </th>
-            <th ng-click="sort('region')">Region
-            <span class="glyphicon sort-icon" ng-show="sortKey=='region'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+            <th ng-click="sort('client')">Client
+            <span class="glyphicon sort-icon" ng-show="sortKey=='client'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
             </th>
-            <th ng-click="sort('age')">Age
-            <span class="glyphicon sort-icon" ng-show="sortKey=='age'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+            <th ng-click="sort('fam_region')">Region
+            <span class="glyphicon sort-icon" ng-show="sortKey=='fam_region'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
             </th>
-            <th ng-click="sort('nbfamilles')">NB Famille
-            <span class="glyphicon sort-icon" ng-show="sortKey=='nbfamilles'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+            <th ng-click="sort('fam_size')">Family size
+            <span class="glyphicon sort-icon" ng-show="sortKey=='fam_size'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
             </th>
-            <th ng-click="sort('nbmasculin')">NB Masculins
-            <span class="glyphicon sort-icon" ng-show="sortKey=='nbmasculin'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+            <th ng-click="sort('fam_age')">Family Age
+            <span class="glyphicon sort-icon" ng-show="sortKey=='fam_age'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
             </th>
-            <th ng-click="sort('nbfeminins')">NB Feminins
-            <span class="glyphicon sort-icon" ng-show="sortKey=='nbfeminins'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
-            </th>
+            
             <th>Edit</th>
             <th>Delete</th>
         </tr>
         <tr dir-paginate="recepteur in recepteurmanagement.recepteurs= (recepteurmanagement.recepteurs|filter: test)
         |itemsPerPage:8|limitTo: recepteurmanagement.limit| orderBy: sortKey:reverse">
-            <td>{{ recepteur.recepteur}}</td>
-            <td>{{ recepteur.region}}</td>
-            <td>{{ recepteur.age}}</td>
-            <td>{{ recepteur.nbfamilles}}</td>
-            <td>{{ recepteur.nbmasculin}}</td>
-            <td>{{ recepteur.nbfeminins}}</td>
+            <td>{{ recepteur.id_rec}}</td>
+            <td>{{ recepteur.client}}</td>
+            <td>{{ recepteur.fam_region}}</td>
+            <td>{{ recepteur.fam_size}}</td>
+            <td>{{ recepteur.fam_age}}</td>
              <td><button ng-click="searchRecepteur(recepteur._id);" data-toggle="modal" data-target="#recepteurEditModal" class="btn btn-info btn-sm">Edit</button></td>
               <td><button type="button" data-toggle="modal" data-target="#deleteModal">
              <span class="glyphicon glyphicon-trash"></span></button>
@@ -157,31 +154,28 @@
       <div class="modal-body">
         <form>
           <div class="form-group">
-            <label for="refRecepteur">Recepteur Reference</label>
-            <input type="recepteur" class="form-control" ng-model='recepteur.recepteur' id="refRecepteur" placeholder="Enter reference recepteur">
+            <label for="refRecepteur">Recepteur</label>
+            <input type="id_rec" class="form-control" ng-model='recepteur.id_rec' id="refRecepteur" placeholder="Enter reference recepteur">
           </div>
           <div class="form-group">
-            <label for="region">Region</label>
-            <input type="region" class="form-control" id="region" ng-model='recepteur.region' placeholder="Enter Region">
+            <label for="client">Client</label>
+            <input type="client" class="form-control" id="region" ng-model='recepteur.client' placeholder="Enter Client">
           </div>
           <div class="form-group">
-            <label for="age">Age</label>
-            <input type="age" class="form-control" id="age" ng-model='recepteur.age' placeholder="Enter Age">
+            <label for="fam_region">Region</label>
+            <input type="fam_region" class="form-control" id="fam_region" ng-model='recepteur.fam_region' placeholder="Enter Region">
           </div>
           <div class="form-group">
-            <label for="nbfamilles">Nbfamilles</label>
-            <input type="nbfamilles" class="form-control" id="nbfamilles" ng-model='recepteur.nbfamilles' placeholder="Enter nombre Famille">
+            <label for="fam_size">Size Family</label>
+            <input type="fam_size" class="form-control" id="fam_size" ng-model='recepteur.fam_size' placeholder="Enter Size family">
           </div>
           <div class="form-group">
-            <label for="nbmasculin">Nbmasculins</label>
-            <input type="nbmasculin" class="form-control" id="nbmasculin" ng-model='recepteur.nbmasculin' placeholder="Enter nombre masculin">
-          </div>
-          <div class="form-group">
-            <label for="nbfeminins">Nbfeminins</label>
-            <input type="nbfeminins" class="form-control" id="nbfeminins" ng-model='recepteur.nbfeminins' placeholder="Enter nombre Feminins">
+            <label for="fam_age">Age Family</label>
+            <input type="fam_age" class="form-control" id="fam_age" ng-model='recepteur.fam_age' placeholder="Enter Age Family">
           </div>
           
-          <button type="submit" class="btn btn-default" data-ng-click="addRecepteur(recepteur);"  data-dismiss="modal">Submit</button>
+          
+          <button type="submit" class="btn btn-default" data-ng-click="addRecepteur(id_rec);"  data-dismiss="modal">Submit</button>
         </form>
       </div>
       <div class="modal-footer">
@@ -192,43 +186,8 @@
 </div>
 
 
-<div id="chaineEditModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Edit Chaine</h4>
-      </div>
-      <div class="modal-body">
-        <form>
-      <div class="form-group">
-        <label for="txtNom">Name Chaine</label>
-        <input type="text" class="form-control" id="txtNom" ng-modal='chaine.nomchaine' placeholder="Update chaine">
-      </div>
-      <div class="form-group">
-        <label for="txtBouquet">Bouquet</label>
-        <input type="text" class="form-control" id="txtBouquet" ng-modal='chaine.bouquet' placeholder="Enter bouquet">
-      </div>
-      <div class="form-group">
-        <label for="txtRecepteur">Recepteur</label>
-        <input type="number" class="form-control" id="txtRecepteur" ng-modal='chaine.recepteur' placeholder="recepteur">
-      </div>
 
-      <div class="form-group">
-        <label for="Picture">Picture</label>
-        <input type="text" class="form-control" id="Picture" ng-modal='chaine.picture' placeholder="edit picture">
-      </div>
-      <button type="submit" class="btn btn-default" data-ng-click="updateChaine(chaine);">Submit</button>
-    </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="alert alert-warning text-center" data-ng-if="!searchRecepteur.recepteurs.length">
+<div class="alert alert-warning text-center" data-ng-if="searchRecepteur.recepteurs.length">
     No recepteurs yet, why don't you <button type="button" ng-click="searchRecepteur(123456789012);" data-toggle="modal" data-target="#recepteurAddModal" >
         <strong>Add one</strong>
       </button>?

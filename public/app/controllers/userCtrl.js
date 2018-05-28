@@ -13,11 +13,12 @@ angular.module('userControllers', ['userServices'])
 
         // If form is valid and passwords match, attempt to create user         
         if (valid && confirmed) {
-            app.regData.name = app.regData.firstName + " " + app.regData.lastName; // Combine first and last name before submitting to database
+        
             // Runs custom function that registers the user in the database 
-            User.create(app.regData).then(function(data) {
+            User.createUser(app.regData).then(function(data) {
                 // Check if user was saved to database successfully
                 if (data.data.success) {
+                    app.name = data.data.message;
                     app.loading = false; // Stop bootstrap loading icon
                     $scope.alert = 'alert alert-success'; // Set class for message
                     app.successMsg = data.data.message + '...Redirecting'; // If successful, grab message from JSON object and redirect to login page
@@ -60,6 +61,8 @@ angular.module('userControllers', ['userServices'])
         });
     };
 
+  
+
     // Custom function that checks if e-mail is available for user to use       
     this.checkEmail = function(regData) {
         app.checkingEmail = true; // Start bootstrap loading icon
@@ -79,6 +82,7 @@ angular.module('userControllers', ['userServices'])
             }
         });
     };
+   
 })
 
 // Custom directive to check matching passwords 
@@ -187,3 +191,6 @@ angular.module('userControllers', ['userServices'])
         $location.path('/'); // Redirect to home page
     }
 });
+
+
+  

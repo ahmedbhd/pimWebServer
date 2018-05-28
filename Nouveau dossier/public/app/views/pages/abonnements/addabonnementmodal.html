@@ -1,0 +1,32 @@
+<div id="abonnementAddModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Add Abonnement</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="txtDuree">Duree</label>
+            <input type="duree_abonnement" class="form-control" ng-model='abonnement.duree_abonnement' id="txtDuree" placeholder="Enter Duree">
+          </div>
+          <div class="form-group">
+            <label for="txtType">Type</label>
+            <input type="type_abonnement" class="form-control" id="txtType" ng-model='abonnement.type_abonnement' placeholder="Enter Type">
+          </div>
+          <div class="form-group">
+            <label for="txtActive">Active</label>
+            <input type="active" class="form-control" id="txtActive" ng-model='abonnement.active' placeholder="Enter Activation">
+          </div>
+          <button type="submit" class="btn btn-default" data-ng-click="addAbonnement(abonnement);"  data-dismiss="modal">Submit</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+    </div>
+</div>

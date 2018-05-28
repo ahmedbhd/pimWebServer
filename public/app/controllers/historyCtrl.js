@@ -1,15 +1,15 @@
-angular.module('historyController', [])
-.controller('historyCtrl', ['History',function(History, User,$scope) {
+angular.module('historyController', ['ui-notification'])
+.controller('historyCtrl', function(History, Notification, $scope) {
    var app = this;
    
-  /* 
+    
   
   
 
    function getHistorys(){
 
 
-   History.getHistory().then(function(data) {
+   History.getHistorys().then(function(data) {
       
       if (data.data.success) {
         app.historys = data.data.historys;
@@ -30,7 +30,7 @@ angular.module('historyController', [])
     }
 
     getHistorys();
- */
 
 
-  }]);
+
+  });

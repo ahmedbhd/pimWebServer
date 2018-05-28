@@ -1,7 +1,6 @@
 var mongoose = require('mongoose'); // Import Mongoose Package
 var Schema = mongoose.Schema; // Assign Mongoose Schema function to variable
-// Import Mongoose Validator Plugin
-
+var Abonnement = require ('../models/abonnement');
 
 
 
@@ -10,11 +9,11 @@ var ChaineSchema = new Schema({
     nomchaine: { type: String, required: true, unique: true},
     picture: { type: String, required: true },
     bouquet: { type: String, required: true},
-    recepteur: { type: Number, required: true}
+    recepteur: { type: Number, required: true},
+    abonnement: [{ type: Schema.Types.ObjectId, ref: 'Abonnement'}]
     
    
 });
-
 
 
 

@@ -2,9 +2,9 @@ var User = require('../models/user'); // Import User Model
 var jwt = require('jsonwebtoken'); // Import JWT Package
 var secret = 'harrypotter'; // Create custom secret for use in JWT
 var Chaine = require ('../models/chaine');
-var Channel = require ('../models/channel');
 var History = require ('../models/history');
 var Abonnement = require ('../models/abonnement');
+var Recepteur = require ('../models/recepteur');
 var http = require('http');
 var Struct = require('struct'); 
 var json = require('json-object').setup(global);
@@ -12,12 +12,15 @@ var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb://localhost:27017/";
 var express = require('express'); 
 var app = express();
+var mongojs = require('mongojs');
+var db = mongojs('pimdb', ['chaines', 'users', 'recepteurs']);
+url.Promise = global.Promise;
 
 //////restful cosumption 
 var bouq="";    
 var chaine="";
 var Token="";
-var Tokenrecepteur="eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYWhtZWRiaGQiLCJleHAiOjE1MjczNzgxODksImp0aSI6IkFobWVkYmhkLTYifQ.zk9wMnnYifOuuYTqpRNg5BicgoE0f0NQm_qz2OgNz0h9WuBi9fj8FxB7fCd4hKdVb_ujwtkMdPXKNSfGucaiIg";
+var Tokenrecepteur="eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYWhtZWQiLCJleHAiOjE1Mjc0ODE2MDIsImp0aSI6ImFobWVkIn0.pTag_pfibsFE00K1dqXtVCdyBuE0Xus4IWtwxhFiEWDnETSZMp9rXhcLGiCUZOOdz3v_CoLdUA_o9oRngiOnzQ";
 /* var History = Struct()
 	.chars('recepteur',10)
     .chars('bouquet',10)
@@ -261,6 +264,106 @@ module.exports = function(router) {
     // var client = nodemailer.createTransport(sgTransport(options)); // Use if using sendgrid configuration
     // End Sendgrid Configuration Settings  
 
+	
+	// Route to register new users
+    router.post('/users', function(req, res) {
+     
+        var user = new User(); // Create new User object
+        user.username = req.body.username;  // Save username from request to User object
+        user.password = req.body.password; // Save password from request to User object
+        user.email = req.body.email; // Save email from request to User object
+        user.name = req.body.name;
+        user.adresse = req.body.adresse;
+        user.type_client = req.body.client;
+        user.phone = req.body.phone;
+        user.abonne = req.body.abonne;
+        user.abonnement = req.body.abonnement;
+        user.temporarytoken = jwt.sign({ username: user.username, email: user.email }, secret, { expiresIn: '24h' }); // Create a token for activating account through e-mail
+          
+        // Check if request is valid and not empty or null
+        if (req.body.username === null || req.body.username === '' || req.body.password === null || req.body.password === '' || req.body.email === null || req.body.email === '' || req.body.name === null || req.body.name === '') {
+            res.json({ success: false, message: 'Ensure username, email, name, and password were provided' });
+        } else {
+            // Save new user to database
+            user.save(function(err) {
+                 
+                if (err) {
+                    // Check if any validation errors exists (from user model)
+                    if (err.errors !== null) {
+                        if (err.errors.name) {
+                            res.json({ success: false, message: err.errors.name.message });
+                        } else if (err.errors.email) {
+                            res.json({ success: false, message: err.errors.email.message }); // Display error in validation (email)
+                        } else if (err.errors.username) {
+                            res.json({ success: false, message: err.errors.username.message }); // Display error in validation (username)
+                        } else if (err.errors.password) {
+                            res.json({ success: false, message: err.errors.password.message }); // Display error in validation (password)
+                        }   else {
+                            res.json({ success: false, message: err }); // Display any other errors with validation
+                        }
+                    } else if (err) {
+                        // Check if duplication error exists
+                        if (err.code == 11000) {
+                            if (err.errmsg[61] == "u") {
+                                res.json({ success: false, message: 'That username is already taken' }); // Display error if username already taken
+                            } else if (err.errmsg[61] == "e") {
+                                res.json({ success: false, message: 'That e-mail is already taken' }); // Display error if e-mail already taken
+                            }
+                        } else {
+                            res.json({ success: false, message: err }); // Display any other error
+                        }
+                    }
+                } else {
+                    
+                    res.json({ success: true, message: 'Account registered! Please check your e-mail for activation link.' }); // Send success message back to controller/request
+                }
+            });
+        }
+    });
+
+     // Route to check if e-mail chosen on registration page is taken    
+     router.post('/checkemail', function(req, res) {
+        User.findOne({ email: req.body.email }).select('email').exec(function(err, user) {
+            if (err) {
+                // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
+              
+                // Function to send e-mail to myself
+               
+                res.json({ success: false, message: 'Something went wrong. This error has been logged and will be addressed by our staff. We apologize for this inconvenience!' });
+            } else {
+                if (user) {
+                    res.json({ success: false, message: 'That e-mail is already taken' }); // If user is returned, then e-mail is taken
+                } else {
+                    res.json({ success: true, message: 'Valid e-mail' }); // If user is not returned, then e-mail is not taken
+                }
+            }
+        });
+    });
+
+     // Route to check if username chosen on registration page is taken
+     router.post('/checkusername', function(req, res) {
+        User.findOne({ username: req.body.username }).select('username').exec(function(err, user) {
+            if (err) {
+                // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
+                var email = {
+                    from: 'MEAN Stack Staff, cruiserweights@zoho.com',
+                    to: 'gugui3z24@gmail.com',
+                    subject: 'Error Logged',
+                    text: 'The following error has been reported in the MEAN Stack Application: ' + err,
+                    html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
+                };
+                // Function to send e-mail to myself
+              
+                res.json({ success: false, message: 'Something went wrong. This error has been logged and will be addressed by our staff. We apologize for this inconvenience!' });
+            } else {
+                if (user) {
+                    res.json({ success: false, message: 'That username is already taken' }); // If user is returned, then username is taken
+                } else {
+                    res.json({ success: true, message: 'Valid username' }); // If user is not returned, then username is not taken
+                }
+            }
+        });
+    });
 // Route for user logins
 router.post('/authenticate', function(req, res) {
     var loginUser = (req.body.username).toLowerCase(); // Ensure username is checked in lowercase against database
@@ -343,54 +446,8 @@ router.post('/authenticate', function(req, res) {
     });
 
 
-    // Route to register new users  
-    router.post('/users', function(req, res) {
-        var user = new User(); // Create new User object
-        user.username = req.body.username; // Save username from request to User object
-        user.password = req.body.password; // Save password from request to User object
-        user.email = req.body.email; // Save email from request to User object
-        user.name = req.body.name; // Save name from request to User object
-        user.temporarytoken = jwt.sign({ username: user.username, email: user.email }, secret, { expiresIn: '24h' }); // Create a token for activating account through e-mail
-
-        // Check if request is valid and not empty or null
-        if (req.body.username === null || req.body.username === '' || req.body.password === null || req.body.password === '' || req.body.email === null || req.body.email === '' || req.body.name === null || req.body.name === '') {
-            res.json({ success: false, message: 'Ensure username, email, and password were provided' });
-        } else {
-            // Save new user to database
-            user.save(function(err) {
-                if (err) {
-                    // Check if any validation errors exists (from user model)
-                    if (err.errors !== null) {
-                        if (err.errors.name) {
-                            res.json({ success: false, message: err.errors.name.message }); // Display error in validation (name)
-                        } else if (err.errors.email) {
-                            res.json({ success: false, message: err.errors.email.message }); // Display error in validation (email)
-                        } else if (err.errors.username) {
-                            res.json({ success: false, message: err.errors.username.message }); // Display error in validation (username)
-                        } else if (err.errors.password) {
-                            res.json({ success: false, message: err.errors.password.message }); // Display error in validation (password)
-                        } else {
-                            res.json({ success: false, message: err }); // Display any other errors with validation
-                        }
-                    } else if (err) {
-                        // Check if duplication error exists
-                        if (err.code == 11000) {
-                            if (err.errmsg[61] == "u") {
-                                res.json({ success: false, message: 'That username is already taken' }); // Display error if username already taken
-                            } else if (err.errmsg[61] == "e") {
-                                res.json({ success: false, message: 'That e-mail is already taken' }); // Display error if e-mail already taken
-                            }
-                        } else {
-                            res.json({ success: false, message: err }); // Display any other error
-                        }
-                    }
-                } else {
-                    
-                    res.json({ success: true, message: 'Account registered! Please check your e-mail for activation link.' }); // Send success message back to controller/request
-                }
-            });
-        }
-    });
+      
+    
      router.post('/chaines', function(req, res) {
         var chaine = new Chaine(); // Create new User object
         chaine.nomchaine = req.body.nomchaine; // Save username from request to User object
@@ -409,7 +466,9 @@ router.post('/authenticate', function(req, res) {
         }
     });
 
-    router.post('/abonnements', function(req, res) {
+  
+
+     router.post('/abonnements', function(req, res) {
         var abonnement = new Abonnement();
         abonnement.duree_abonnement = req.body.duree_abonnement;
         abonnement.type_abonnement = req.body.type_abonnement;
@@ -426,51 +485,11 @@ router.post('/authenticate', function(req, res) {
         }
     });
 
-    // Route to check if username chosen on registration page is taken
-    router.post('/checkusername', function(req, res) {
-        User.findOne({ username: req.body.username }).select('username').exec(function(err, user) {
-            if (err) {
-                // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
-                var email = {
-                    from: 'MEAN Stack Staff, cruiserweights@zoho.com',
-                    to: 'gugui3z24@gmail.com',
-                    subject: 'Error Logged',
-                    text: 'The following error has been reported in the MEAN Stack Application: ' + err,
-                    html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
-                };
-                // Function to send e-mail to myself
-              
-                res.json({ success: false, message: 'Something went wrong. This error has been logged and will be addressed by our staff. We apologize for this inconvenience!' });
-            } else {
-                if (user) {
-                    res.json({ success: false, message: 'That username is already taken' }); // If user is returned, then username is taken
-                } else {
-                    res.json({ success: true, message: 'Valid username' }); // If user is not returned, then username is not taken
-                }
-            }
-        });
-    });
+   
 
 
 
-    // Route to check if e-mail chosen on registration page is taken    
-    router.post('/checkemail', function(req, res) {
-        User.findOne({ email: req.body.email }).select('email').exec(function(err, user) {
-            if (err) {
-                // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
-              
-                // Function to send e-mail to myself
-               
-                res.json({ success: false, message: 'Something went wrong. This error has been logged and will be addressed by our staff. We apologize for this inconvenience!' });
-            } else {
-                if (user) {
-                    res.json({ success: false, message: 'That e-mail is already taken' }); // If user is returned, then e-mail is taken
-                } else {
-                    res.json({ success: true, message: 'Valid e-mail' }); // If user is not returned, then e-mail is not taken
-                }
-            }
-        });
-    });
+   
 
     
     // Route to activate the user's account 
@@ -898,6 +917,17 @@ router.post('/authenticate', function(req, res) {
         });
     
     });
+    router.get('/h', function(req, res) {
+        History.find({}, function(err, historys) {
+          if (!historys) {
+                                    res.json({ success: false, message: 'Users not found' }); // Return error
+                                } else {
+                                    res.json({ success: true, historys: historys}); // Return users, along with current user's permission
+                                }
+            
+        });
+    
+    });
 
     router.get('/managementabonnement', function(req, res) {
         Abonnement.find({}, function(err, abonnements) {
@@ -973,7 +1003,7 @@ router.post('/authenticate', function(req, res) {
                     res.json({ success: false, message: 'No user found' }); // Return error
                 } else {
                     // Check if logged in user has editing privileges
-                    if (mainUser.permission === 'admin' || mainUser.permission === 'moderator') {
+                    if (mainUser.permission === 'admin') {
                         // Find the user to be editted
                         User.findOne({ _id: editUser }, function(err, user) {
                             if (err) {
@@ -1032,7 +1062,7 @@ router.post('/authenticate', function(req, res) {
                     // Check if a change to name was requested
                     if (newName) {
                         // Check if person making changes has appropriate access
-                        if (mainUser.permission === 'admin' || mainUser.permission === 'moderator') {
+                        if (mainUser.permission === 'admin') {
                             // Look for user in database
                             User.findOne({ _id: editUser }, function(err, user) {
                                 if (err) {
@@ -1079,7 +1109,7 @@ router.post('/authenticate', function(req, res) {
                     // Check if a change to username was requested
                     if (newUsername) {
                         // Check if person making changes has appropriate access
-                        if (mainUser.permission === 'admin' || mainUser.permission === 'moderator') {
+                        if (mainUser.permission === 'admin') {
                             // Look for user in database
                             User.findOne({ _id: editUser }, function(err, user) {
                                 if (err) {
@@ -1110,7 +1140,7 @@ router.post('/authenticate', function(req, res) {
                     // Check if change to e-mail was requested
                     if (newEmail) {
                         // Check if person making changes has appropriate access
-                        if (mainUser.permission === 'admin' || mainUser.permission === 'moderator') {
+                        if (mainUser.permission === 'admin') {
                             // Look for user that needs to be editted
                             User.findOne({ _id: editUser }, function(err, user) {
                                 if (err) {
@@ -1157,7 +1187,7 @@ router.post('/authenticate', function(req, res) {
                     // Check if a change to permission was requested
                     if (newPermission) {
                         // Check if user making changes has appropriate access
-                        if (mainUser.permission === 'admin' || mainUser.permission === 'moderator') {
+                        if (mainUser.permission === 'admin') {
                             // Look for user to edit in database
                             User.findOne({ _id: editUser }, function(err, user) {
                                 if (err) {
@@ -1169,11 +1199,11 @@ router.post('/authenticate', function(req, res) {
                                         res.json({ success: false, message: 'No user found' }); // Return error
                                     } else {
                                         // Check if attempting to set the 'user' permission
-                                        if (newPermission === 'user') {
+                                        if (newPermission === 'client') {
                                             // Check the current permission is an admin
                                             if (user.permission === 'admin') {
                                                 // Check if user making changes has access
-                                                if (mainUser.permission !== 'admin') {
+                                                if (mainUser.permission !== 'client' || mainUser.permission !== 'silver' || mainUser.permission !== 'gold' || mainUser.permission !== 'platinium') {
                                                     res.json({ success: false, message: 'Insufficient Permissions. You must be an admin to downgrade an admin.' }); // Return error
                                                 } else {
                                                     user.permission = newPermission; // Assign new permission to user
@@ -1199,11 +1229,11 @@ router.post('/authenticate', function(req, res) {
                                             }
                                         }
                                         // Check if attempting to set the 'moderator' permission
-                                        if (newPermission === 'moderator') {
+                                        if (newPermission === 'silver') {
                                             // Check if the current permission is 'admin'
                                             if (user.permission === 'admin') {
                                                 // Check if user making changes has access
-                                                if (mainUser.permission !== 'admin') {
+                                                if (mainUser.permission !== 'client' || mainUser.permission !== 'silver' || mainUser.permission !== 'gold' || mainUser.permission !== 'platinium') {
                                                     res.json({ success: false, message: 'Insufficient Permissions. You must be an admin to downgrade another admin' }); // Return error
                                                 } else {
                                                     user.permission = newPermission; // Assign new permission
@@ -1228,12 +1258,55 @@ router.post('/authenticate', function(req, res) {
                                                 });
                                             }
                                         }
+                                        if (newPermission === 'gold') {
+                                            // Check if the current permission is 'admin'
+                                            if (user.permission === 'admin') {
+                                                // Check if user making changes has access
+                                                if (mainUser.permission !== 'client' || mainUser.permission !== 'silver' || mainUser.permission !== 'gold' || mainUser.permission !== 'platinium') {
+                                                    res.json({ success: false, message: 'Insufficient Permissions. You must be an admin to downgrade another admin' }); // Return error
+                                                } else {
+                                                    user.permission = newPermission; // Assign new permission
+                                                    // Save changes
+                                                    user.save(function(err) {
+                                                        if (err) {
+                                                            console.log(err); // Log error to console
+                                                        } else {
+                                                            res.json({ success: true, message: 'Permissions have been updated!' }); // Return success
+                                                        }
+                                                    });
+                                                }
+                                            } else {
+                                                user.permission = newPermission; // Assign new permssion
+                                                // Save changes
+                                                user.save(function(err) {
+                                                    if (err) {
+                                                        console.log(err); // Log error to console
+                                                    } else {
+                                                      res.json({ success: true, message: 'Permissions have been updated!' }); // Return success
+                                                    }
+                                                });
+                                            }
+                                        } 
 
-                                        // Check if assigning the 'admin' permission
-                                        if (newPermission === 'admin') {
-                                            // Check if logged in user has access
-                                            if (mainUser.permission === 'admin') {
-                                                user.permission = newPermission; // Assign new permission
+                                        if (newPermission === 'platinium') {
+                                            // Check if the current permission is 'admin'
+                                            if (user.permission === 'admin') {
+                                                // Check if user making changes has access
+                                                if (mainUser.permission !== 'client' || mainUser.permission !== 'silver' || mainUser.permission !== 'gold' || mainUser.permission !== 'platinium') {
+                                                    res.json({ success: false, message: 'Insufficient Permissions. You must be an admin to downgrade another admin' }); // Return error
+                                                } else {
+                                                    user.permission = newPermission; // Assign new permission
+                                                    // Save changes
+                                                    user.save(function(err) {
+                                                        if (err) {
+                                                            console.log(err); // Log error to console
+                                                        } else {
+                                                            res.json({ success: true, message: 'Permissions have been updated!' }); // Return success
+                                                        }
+                                                    });
+                                                }
+                                            } else {
+                                                user.permission = newPermission; // Assign new permssion
                                                 // Save changes
                                                 user.save(function(err) {
                                                     if (err) {
@@ -1242,10 +1315,11 @@ router.post('/authenticate', function(req, res) {
                                                         res.json({ success: true, message: 'Permissions have been updated!' }); // Return success
                                                     }
                                                 });
-                                            } else {
-                                                res.json({ success: false, message: 'Insufficient Permissions. You must be an admin to upgrade someone to the admin level' }); // Return error
                                             }
+                                        } else {
+                                                res.json({ success: false, message: 'Insufficient Permissions. You must be an admin to upgrade someone to the admin level' }); // Return error
                                         }
+                                        
                                     }
                                 }
                             });
@@ -1601,5 +1675,175 @@ router.post('/authenticate', function(req, res) {
         
     
     });
+	
+	
+	/////////houssem
+	
+ router.get('/chaine/:id', function(req, res){
+    console.log('Received findOne chaine request');
+    db.chaines.findOne({_id: new mongojs.ObjectId(req.params.id)}, function(err, docs){
+        console.log(docs);
+        res.json(docs);
+    })
+});
+
+  router.get('/user/:id', function(req, res){
+    console.log('Received findOne user request');
+    db.users.findOne({_id: new mongojs.ObjectId(req.params.id)}, function(err, docs){
+        console.log(docs);
+        res.json(docs);
+    })
+});
+
+   router.post('/addUser', function(req, res) {
+     console.log(req.body);
+    db.users.insert(req.body, function(docs){
+        console.log(docs);
+        res.json(docs);
+         
+    
+    });
+   });
+
+    router.post('/addChaine', function(req, res) {
+     console.log(req.body);
+    db.chaines.insert(req.body, function(docs){
+        console.log(docs);
+        res.json(docs);
+         
+    
+    });
+   });
+    
+
+    router.post('/addRecepteur', function(req, res) {
+     console.log(req.body);
+    db.recepteurs.insert(req.body, function(docs){
+        console.log(docs);
+        res.json(docs);
+         
+    
+    });
+   });
+
+    router.put('/updateChaine', function(req, res){
+    console.log("Received updateChaine request");
+    db.chaines.findAndModify({query: {_id: new mongojs.ObjectId(req.body._id)}, 
+                                        update: {$set: {nomchaine: req.body.nomchaine, bouquet: req.body.bouquet, recepteur: req.body.recepteur,
+                                         picture: req.body.picture}}
+                                        }, function(err, docs){
+                                            console.log(docs);
+                                            res.json(docs);
+                                        })
+    });
+    
+	 router.post('/recepteurs', function(req, res) {
+        var recepteur = new Recepteur();
+        recepteur.id_rec = req.body.id_rec;
+        recepteur.client = req.body.client;
+        recepteur.fam_region = req.body.fam_region;
+        recepteur.fam_size = req.body.fam_size;
+        recepteur.fam_age  = req.body.fam_age;
+        
+
+        // Check if request is valid and not empty or null
+        if (req.body.id_rec == null || req.body.id_rec == '' || req.body.client == null || req.body.client == '' || req.body.fam_region == null || req.body.fam_region == '') {
+            res.json({ success: false, message: 'Ensure id_rec, client,  and fam_region were provided' });
+        } else {
+            // Save new user to database
+            recepteur.save();
+          
+        }
+    });
+	
+	router.post('/historys', function(req, res) {
+        var history = new History();
+        history.recepteur = req.body.recepteur;
+        history.bouquet = req.body.bouquet;
+        history.channel = req.body.channel;
+        history.program = req.body.program;
+     
+        
+
+        // Check if request is valid and not empty or null
+        if (req.body.recepteur == null || req.body.recepteur == '' || req.body.bouquet == null || req.body.bouquet == '' || req.body.channel == null || req.body.channel == '') {
+            res.json({ success: false, message: 'Ensure recepteur, bouquet,  and date were provided' });
+        } else {
+            // Save new user to database
+            history.save();
+          
+        }
+    });
+      
+	    router.delete('/managemente/:nomchaine', function(req, res) {
+        var deletedChaine = req.params.nomchaine; // Assign the username from request parameters to a variable
+         Chaine.findOne({}, function(err) {
+            if (err) {
+                res.json({ success: false, message: 'error'});
+            }else {
+
+                Chaine.findOneAndRemove({ nomchaine: deletedChaine }, function(err, chaine) {
+                   if (err) throw err;
+                     res.json({ success: true }); // Return success status
+                });
+           }
+        });
+    });
+
+
+    router.get('/editChaine/:id', function(req, res) {
+      var editChaine = req.params.id;
+      Chaine.findOne({}, function(err){
+        if (err) {
+            res.json({ success: false, message: 'error'});
+        } else {
+            Chaine.findOne({_id: editChaine}, function(err, chaine){
+                if (err) throw err;
+                if(!chaine){
+                    res.json({ success: false, message: 'chaine not found'});
+                } else {
+                    res.json({ success: true, chaine: chaine});
+                }
+            });
+        }
+      });
+    });
+
+
+
+
+ router.get('/abonnement/:id', function(req, res){
+    console.log('Received findOne person request');
+    Abonnement.findOne({_id: new mongojs.ObjectId(req.params.id)}, function(err, docs){
+        console.log(docs);
+        res.json(docs);
+    });
+});
+
+ router.post('/addAbonnement', function(req, res){
+    console.log(req.body);
+    Abonnement.insert(req.body, function(data){
+        console.log(data);
+        res.json(docs);
+    })
+});
+    router.delete('/deleteAbonnement/:id', function(req, res){
+    console.log("Received delete one person request...");
+    Abonnement.remove({_id: new mongojs.ObjectId(req.params.id)}, function(err, docs){
+        console.log(docs);
+        res.json(docs);
+    });
+});
+
+   router.put('/updateAbonnement', function(req, res){
+    console.log("Received updatePerson request");
+    Abonnement.findAndModify({query: {"_id": new mongojs.ObjectId(req.body._id)}, 
+                                        update: {$set: {duree_abonnement: req.body.duree_abonnement, type_abonnement: req.body.type_abonnement, active: req.body.active}}
+                                        }, function(err, docs){
+                                            console.log(docs);
+                                            res.json(docs);
+                                        })
+    });
+   
     return router; // Return the router object to server
 };

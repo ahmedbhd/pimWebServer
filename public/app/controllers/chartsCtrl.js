@@ -1,43 +1,36 @@
-app.controller('chartsCtrl', function($scope, $http) {
-    var getdata;
- 
-    getData = function(url, callback) {
-        $http({
-            method: 'GET',
-            dataType: 'json',
-            url: url,
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }).success(callback);
-    };
- 
-    getData('/api/managementhistory/', function(response) {
-        console.log(response);
-       var labeldata = [];
-            var chartData = [];
- 
-        chart = {
-            caption: "Top 10 Most Populous Countries",
-            showValues: 0,
-            theme: "zune"
-        };
- 
-        for (var i = 0; i < response.length; i++) {
-             labeldata.push(response[i].channel);
-                chartData.push(response[i].recepteur)
-           
-        };
- 
-         $scope.labels = labeldata;
+angular.module('chartController', [])
+.controller('chartsCtrl', function(History, User) {
+   var app = this;
+   
+  
+  
+  
+   
+   function getHistorys(){
 
-  $scope.data = [
-    chartData
+
+   History.getHistory().then(function(data) {
+      
+      if (data.data.success) {
+        app.historys = data.data.historys;
+       console.log(data);
+       
+      }else {
+                app.errorMsg = data.data.message; // Set error message
+                
+           
+            }
+       
+        
+        
+        //common error function
     
-  ];
-        
- 
-        
- 
-    });
-});
+    
+   });
+    }
+
+    getHistorys();
+
+
+
+  });

@@ -1,0 +1,237 @@
+<div class="row text-center">
+    <div class="container">
+        <h2 class="section-heading">Gestion Abonnements</h2>
+      
+    </div>
+</div>
+<!-- Heading -->
+
+<br>
+
+<!-- Loading Icon (Bootstrap) -->
+<div class="jumbotron text-center" ng-show="managementabonnement.loading">
+    <span class="glyphicon glyphicon-repeat spinner"></span>
+    <p>Loading....</p>
+</div>
+<!-- Loading Icon (Bootstrap) -->
+
+<br>
+
+<!-- Input For Filter  -->
+<div>
+    <div class="col-lg-6">
+        <div class="input-group">
+            <span class="input-group-addon">Results to display:</span>
+            <input type="text" class="form-control" ng-model="number">
+        </div>
+    </div>
+</div>
+
+<!-- Container: Start -->
+<div class="container">
+
+    <!-- Apply Button Filter -->
+    <button type="button" ng-click="abonnement.showMore(number);" class="btn btn-success">Apply Filter</button>
+
+    <!--/ Show All Button -->
+    <button type="button" ng-click="abonnement.showAll();" class="btn btn-warning">Show All</button>
+
+        
+   
+
+    <!-- Input For Filter  -->
+
+    <!-- Simple Search Bar -->
+    <div class="navbar-form">
+        <div class="form-group">
+            <!-- Search Input -->
+            <input type="text" class="form-control" name="search" placeholder="search for..." ng-model="test">
+        </div>
+         <button type="button" ng-click="searchAbonnement(123456789012);"  class="btn btn-primary pull-right" data-toggle="modal" data-target="#abonnementAddModal" class="glyphicon glyphicon-plus">
+        <i class="glyphicon glyphicon-plus"></i>
+      </button>
+        <!-- Serach Button -->
+        
+        <!-- Clear Button -->
+        <button type="button" ng-click="abonnement.clear();" class="btn btn-default">Clear</button>
+        <!-- Advanced Search Button -->
+        <a href="/search">
+            <button type="button" class="btn btn-default">Advanced Search</button>
+        </a>
+    </div>
+    <!-- Simple Search Bar /-->
+
+    <!-- Custom Error Message -->
+    <div class="row show-hide-message" ng-show="abonnement.showMoreError">
+        <div class="alert alert-danger">{{ abonnement.showMoreError }}</div>
+    </div>
+    <!-- Custom Error Message -->
+
+</div>
+<!-- Container: End -->
+
+<br>
+
+<!-- Total Search Results -->
+<div ng-show="searchFilter !== undefined">
+    <p><strong>Total results: </strong>{{ (management.users | filter: searchFilter).length }}</p>
+</div>
+
+<!-- Results Being Shown -->
+<div ng-show="searchFilter !== undefined">
+    <p><strong>Showing: </strong>{{( management.users | filter: searchFilter | limitTo: management.limit).length }}</p>
+</div>
+
+<br>
+<br>
+<br>
+
+
+<!-- User Management Table -->
+<div class="panel panel-primary">
+    <!-- Heading -->
+    <div class="panel-heading">
+        <strong>Abonnement</strong>
+    </div>
+    <!-- Start: Table -->
+    <table class="table">
+        <tr>
+            <th>Duree abonnement</th>
+            <th>Type Abonnement</th>
+            <th>Active/Desactive</th>
+            <th>Edit</th>
+            
+        </tr>
+        <tr ng-repeat="abonnement in abonnement.abonnements | limitTo: abonnement.limit | filter:test">
+            
+            <td><strong>{{ abonnement.duree_abonnement}}</strong></td>
+            <td><strong>{{ abonnement.type_abonnement}}</strong></td>
+            <td><strong><input ng-model="abonnement.active" name="active" type="checkbox"></strong></td>
+            <td><button ng-click="searchAbonnement(abonnement._id);" data-toggle="modal" data-target="#abonnementEditModal">Edit</button></td>
+                   
+        </tr>
+       
+        <!-- End: Table -->
+    </table>
+</div>
+<div id="abonnementAddModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Add Abonnement</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="txtDuree">Duree</label>
+            <input type="duree_abonnement" class="form-control" ng-model='abonnement.duree_abonnement' id="txtDuree" placeholder="Enter Duree">
+          </div>
+          <div class="form-group">
+            <label for="txtType">Type</label>
+            <input type="type_abonnement" class="form-control" id="txtType" ng-model='abonnement.type_abonnement' placeholder="Enter Type">
+          </div>
+          <div class="form-group">
+            <label for="txtActive">Active</label>
+            <input type="active" class="form-control" id="txtActive" ng-model='abonnement.active' placeholder="Enter Activation">
+          </div>
+          <button type="submit" class="btn btn-default" data-ng-click="addAbonnement(abonnement);"  data-dismiss="modal">Submit</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+    </div>
+</div>
+<div id="abonnementEditModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Edit Abonnement</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="txtDuree">Duree</label>
+            <input type="duree_abonnement" class="form-control" id="txtDuree" ng-model='abonnement.duree_abonnement' placeholder="Update Duree">
+          </div>
+          <div class="form-group">
+            <label for="txtType">Type</label>
+            <input type="type_abonnement" class="form-control" id="txtType" ng-model='abonnement.type_abonnement' placeholder="Update Type">
+          </div>
+          <div class="form-group">
+            <label for="txtActive">Active</label>
+            <input type="active" class="form-control" id="txtActive" ng-model='abonnement.active' placeholder="Update Abonnement">
+          </div>
+          <button type="submit" class="btn btn-default"  data-ng-click="updateAbonnement(abonnement);" data-dismiss="modal">Submit</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+</div>
+</div>
+<div class="alert alert-warning text-center" data-ng-if="!abonnement.abonnements.length">
+    No abonnements yet, why don't you <button type="button" ng-click="searchAbonnement(123456789012);" data-toggle="modal" data-target="#abonnementAddModal" ><strong>Add one</strong>
+      </button>?
+</div>
+<br>
+<br>
+<div>
+    <div class="col-lg-6">
+        <div class="input-group">
+            <span class="input-group-addon">Results to display:</span>
+            <input type="text" class="form-control" ng-model="number">
+        </div>
+    </div>
+</div>
+<!-- Container: Start -->
+<div class="container">
+
+    <!-- Apply Button Filter -->
+    <button type="button" ng-click="abonnement.showMore(number);" class="btn btn-success">Apply Filter</button>
+
+    <!--/ Show All Button -->
+    <button type="button" ng-click="abonnement.showAll();" class="btn btn-warning">Show All</button>
+    <!-- Input For Filter  -->
+
+    <!-- Simple Search Bar -->
+    <div class="navbar-form">
+          <div class="form-group">
+           <input class="form-control col-md-0" type="text" ng-model="test" placeholder="Search"/>
+        </div>
+      
+
+    <button type="button" ng-click="searchAbonnement(123456789012);"  class="btn btn-primary pull-right" data-toggle="modal" data-target="#abonnementAddModal" class="glyphicon glyphicon-plus">
+        <i class="glyphicon glyphicon-plus"></i>
+      </button>
+        <!-- Clear Button -->
+        <button type="button" ng-click="abonnement.clear();" class="btn btn-default">Clear</button>
+        <!-- Advanced Search Button -->
+        <a href="/search">
+            <button type="button" class="btn btn-default">Advanced Search</button>
+        </a>
+    </div>
+    <!-- Simple Search Bar /-->
+</div>
+<!-- Container: End -->
+
+<br>
+
+
+<br>
+
+<!-- Custom Error Message -->
+<div class="row show-hide-message" ng-show="abonnement.showMoreError">
+    <div class="alert alert-danger">{{ abonnement.showMoreError }}</div>
+</div>
+<!-- Custom Error Message -->
+
+
+<!-- Input For Filter  -->

@@ -7,6 +7,7 @@ var jwt = require('jsonwebtoken'); // Import JWT Package
 var secret = 'harrypotter'; // Create custom secret to use with JWT
 var Chaine = require('../models/chaine'); 
 
+
 module.exports = function(app, passport) {
     // Start Passport Configuration Settings
         app.use(passport.initialize());
@@ -44,7 +45,7 @@ module.exports = function(app, passport) {
     passport.use(new FacebookStrategy({
             clientID: '2091487617774562', // Replace with your Facebook Developer App client ID
             clientSecret: '9d1d6bc42ad6a57239eb60fc8b025ac5', // Replace with your Facebook Developer client secret
-            callbackURL: "http://localhost:8080/auth/facebook/callback)", // Replace with your Facebook Developer App callback URL
+            callbackURL: "http://localhost:4000/auth/facebook/callback)", // Replace with your Facebook Developer App callback URL
             profileFields: ['id', 'displayName', 'photos', 'email']
         },
         function(accessToken, refreshToken, profile, done) {

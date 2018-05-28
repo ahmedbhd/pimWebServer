@@ -141,12 +141,31 @@ angular.module('mainController', ['authServices', 'userServices'])
                     checkLoginStatus = data.data.username;
                     app.useremail = data.data.email; // Get the user e-mail for us ein index
                     User.getPermission().then(function(data) {
-                        if (data.data.permission === 'admin' || data.data.permission === 'client') {
+                        if (data.data.permission === 'admin') {
                             app.authorized = true; // Set user's current permission to allow management
+                            app.authorized1 = true;
+                            app.authorized2 = true;
+                            app.authorized3 = true;
                             app.loadme = true; // Show main HTML now that data is obtained in AngularJS
-                        } else {
+                        } else if (data.data.permission === 'silver') {
+                            app.authorized1 = true;
+                            app.loadme = true; // Show main HTML now that data is obtained in AngularJS
+                        } else if (data.data.permission === 'gold'){
+                           app.authorized2 = true;
+                           app.loadme = true;
+                        } else if (data.data.permission === 'client') {
+                            app.authorized2 = false;
+                            app.authorized1 = false;
                             app.authorized = false;
-                            app.loadme = true; // Show main HTML now that data is obtained in AngularJS
+                            app.authorized3 = false;
+                            app.authorized4 = true;
+                            app.loadme = true;
+                     //       document.write('<div class="row"><h2><center>You dont have access</center></h2><br> <h1><center>You must suscribe</center></h2></div>');
+                        } else {
+                            app.authorized3 = true;
+                            app.authorized2 = true;
+                            app.authorized1 = true;
+                            app.loadme = true;
                         }
                     });
                 }

@@ -1,0 +1,41 @@
+<div id="chaineAddModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Add Chaine</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="txtName">Name Chaine</label>
+            <input type="nomchaine" class="form-control" ng-model='chaine.nomchaine' id="txtName" placeholder="Enter nom chaine">
+          </div>
+          <div class="form-group">
+            <label for="txtBouquet">Bouquet</label>
+            <input type="bouquet" class="form-control" id="bouquet" ng-model='chaine.bouquet' placeholder="Enter bouquet">
+          </div>
+          <div class="form-group">
+            <label for="txtRecepteur">Recepteur</label>
+            <input type="recepteur" class="form-control" id="txtRecepteur" ng-model='chaine.recepteur' placeholder="Enter recepteur">
+          </div>
+          <div class="form-group" ng-submit="Submit();">
+            <label class="btn btn-success">Browse
+              <input type="file" file-model="file.upload" name="myfile" ng-disabled="uploading" style="display: none;" onchange="angular.element(this).scope().photoChanged(this.files)" 
+              ng-model='chaine.picture'>
+              </label>
+              <button class="btn btn-primary" ng-disabled="uploading">Upload</button>
+            <img class="mythumbnail"  ng-src="{{ thumbnail.dataUrl || 'https://upload.wikimedia.org/wikipedia/en/thumb/a/a8/M6-tv-logo.png/150px-M6-tv-logo.png' }}">
+            
+          </div>
+          <button type="submit" class="btn btn-default" data-ng-click="addChaine(chaine);"  data-dismiss="modal">Submit</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+    </div>
+</div>

@@ -9,7 +9,7 @@ var appRoutes = require('./app/routes/api')(router); // Import the application e
 var path = require('path'); // Import path module
 var passport = require('passport'); // Express-compatible authentication middleware for Node.js.
 var social = require('./app/passport/passport')(app, passport); // Import passport.js End Points/API
-
+var http = require('http').createServer(app);
 
 app.use(morgan('dev')); // Morgan Middleware
 app.use(bodyParser.json()); // Body-parser middleware
@@ -20,7 +20,7 @@ app.use('/api', appRoutes); // Assign name to end points (e.g., '/api/management
 // 
 // <---------- REPLACE WITH YOUR MONGOOSE CONFIGURATION ---------->
 // 
-mongoose.connect('mongodb://localhost/testhoussem', function(err) {
+mongoose.connect('mongodb://localhost/pimdb', function(err) {
     if (err) {
         console.log('Not connected to the database: ' + err); // Log to console if unable to connect to database
     } else {

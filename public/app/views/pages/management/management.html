@@ -106,13 +106,13 @@
 
         </tr>
         <tr ng-repeat="person in management.users | filter: searchFilter | limitTo: management.limit | filter:test">
-            <td><a href="/managementabonnement">{{ person.name }}</a></td>
+            <td>{{ person.name }}</a></td>
             <td>{{ person.username }}</td>
             <td>{{ person.email }}</td>
             <td>{{ person.adresse }}</td>
             <td>{{ person.type_client}}</td>
             <td>{{ person.phone}}</td>
-            <td  style="color: blue;">{{ person.abonnement}}</td>
+            <td   style="color: blue;"><a href="/managementabonnement">{{ person.abonnement}}</a></td>
             <td>
                 <!-- Edit Button -->
                 <a href="/edit/{{ person._id }}">

@@ -162,7 +162,16 @@ var app = angular.module('appRoutes', ['ngRoute', 'authServices'])
         controller: 'managementCtrl',
         controllerAs: 'management',
         authenticated: true,
+        permission: ['admin', 'client']
+   })
+
+    .when('/usermanage', {
+        templateUrl: 'app/views/pages/management/usermanage.html',
+        controller: 'managementeCtrl',
+        controllerAs: 'managemente',
+        authenticated: true,
         permission: ['admin']
+        
     })
 
     // Route: Edit a User
@@ -171,13 +180,20 @@ var app = angular.module('appRoutes', ['ngRoute', 'authServices'])
         controller: 'editCtrl',
         controllerAs: 'edit',
         authenticated: true,
-        permission: ['admin', 'client']
+        permission: ['admin']
     })
     
     .when('/editChaine/:id', {
         templateUrl: 'app/views/pages/managemente/editchainemodal.html',
         controller: 'editCtrl',
         controllerAs: 'edite',
+        authenticated: true
+       
+    })
+     .when('/seuilChaine/:id', {
+        templateUrl: 'app/views/pages/managemente/seuilChaine.html',
+        controller: 'editeCtrl',
+        controllerAs: 'edita',
         authenticated: true
        
     })
@@ -203,14 +219,15 @@ var app = angular.module('appRoutes', ['ngRoute', 'authServices'])
         controller: 'managementeCtrl', 
         controllerAs: 'managemente',
         authenticated: true,
-        permission: ["admin"]
+        permission: ['admin']
     })
 
    
 
     .when('/charts', {
-        templateUrl: 'app/views/pages/charts/charts.html'
-        
+        templateUrl: 'app/views/pages/charts/charts.html',
+        authenticated: true,
+        permission: ['admin', 'client']
 
 
 
@@ -227,14 +244,53 @@ var app = angular.module('appRoutes', ['ngRoute', 'authServices'])
    .when('/managementhistory', {
         templateUrl: 'app/views/pages/history/index.html',
         controller: 'historyCtrl',
-        controllerAs: 'history'
+        controllerAs: 'history',
+        authenticated: true,
+        permission: ["admin"]
        
     })
 
+    .when('/managementrecepteur', {
+        templateUrl: 'app/views/pages/recepteurs/index.html',
+        controller: 'recepteurCtrl',
+        controllerAs: 'recepteurmanagement',
+        authenticated: true,
+        permission: ["admin"]
+       
+    })
+
+     .when('/clientview', {
+        templateUrl: 'app/views/pages/appchart/home.client.view.html',
+        authenticated: true,
+        permission: ['admin']
+        
+       
+    })
+    .when('/silver', {
+        templateUrl: 'app/views/pages/packagesilver/index.html',
+        authenticated: true
+       
+    })
     
+    .when('/gold', {
+        templateUrl: 'app/views/pages/packagegold/index.html'
+     })
 
+   .when('/platinium', {
+        templateUrl: 'app/views/pages/packageplatinium/index.html'
+      
+       
+    })
 
-    .otherwise({ redirectTo: '/' }); // If user tries to access any other route, redirect to home page
+    .when('/demandeabonnement', {
+        templateUrl: 'app/views/pages/abonnements/demandeabonnement.html',
+         controller: 'abonnementCtrl',
+        controllerAs: 'abonnement',
+        authenticated: true
+     
+    })
+
+   .otherwise({ redirectTo: '/' }); // If user tries to access any other route, redirect to home page
 
     $locationProvider.html5Mode ({ enabled: true, requireBase: false }); // Required to remove AngularJS hash from URL (no base is required in index file)
 });

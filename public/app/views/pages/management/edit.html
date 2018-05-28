@@ -118,12 +118,14 @@
     <label>Current Permission:&nbsp&nbsp </label>{{ newPermission }}
     <br>
     <br>
-    <!-- User Permission Button -->
-    <button ng-disabled="edit.disableUser" ng-click="edit.updatePermissions('user');" type="button" class="btn btn-success">User</button>&nbsp
-    <!-- Moderator Permission Button -->
-    <button ng-disabled="edit.disableModerator" ng-click="edit.updatePermissions('client');" type="button" class="btn btn-info">Client</button>&nbsp
+    <!-- Client Permission Button -->
+    <button ng-disabled="edit.disableClient" ng-click="edit.updatePermissions('client');" type="button" class="btn btn-success">Client</button>&nbsp
+    <!-- Client Permission Button -->
+    <button ng-disabled="edit.disableSilver" ng-click="edit.updatePermissions('siler');" type="button" class="btn btn-info">Silver</button>&nbsp
     <!-- Admin Permission Button -->
-    <button ng-disabled="edit.disableAdmin" ng-click="edit.updatePermissions('admin');" type="button" class="btn btn-warning">Admin</button>
+    <button ng-disabled="edit.disableGold" ng-click="edit.updatePermissions('gold');" type="button" class="btn btn-warning">Gold</button>
+    <button ng-disabled="edit.disablePlatinium" ng-click="edit.updatePermissions('platinium');" type="button" class="btn btn-warning">Platinium</button>
+
 </div>
 <!-- Phase Four: Permission Tab -->
 

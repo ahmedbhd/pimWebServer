@@ -61,18 +61,19 @@ var passwordValidator = [
 
 // User Mongoose Schema
 var UserSchema = new Schema({
-    name: { type: String, required: true, validate: nameValidator },
+    name: { type: String, required: true, validate: nameValidator},
     username: { type: String, lowercase: true, required: true, unique: true, validate: usernameValidator },
     password: { type: String, required: true, validate: passwordValidator, select: false },
     email: { type: String, required: true, lowercase: true, unique: true, validate: emailValidator },
-    //adresse: { type: String, required: true},
-    //type_client: { type: String, required: true},
-   /*  phone: { type: Number, required: true, unique: true},
-    abonne: { type: Boolean, required: true, unique: true}, */
+    adresse: { type: String},
+    type_client: { type: String},
+    phone: { type: Number, unique: true},
+    abonnement: { type: String},
+    abonne: { type: Boolean},
     active: { type: Boolean, required: true, default: false },
     temporarytoken: { type: String, required: true },
-    //resettoken: { type: String, required: false },
-    permission: { type: String, required: true , lowercase: true}
+    resettoken: { type: String, required: false },
+    permission: { type: String, required: true, default: 'client'}
 });
 
 // Middleware to ensure password is encrypted before saving user to database

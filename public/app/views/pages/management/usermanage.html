@@ -1,32 +1,44 @@
 <section>
 	<div class="page-header">
-		<h1>Clients</h1>
+		<h1>Notify  Chaine by Nombre Vues</h1>
 	</div>
 	<div class="row">
-		<div class="col-xs-12 col-sm-8">
-			<div class="input-group input-group-lg">
-				<input type="text" class="form-control">
-				<span class="input-group-btn">
-					<button class="btn btn-default" ng-model="test" type="button">Search</button>
-				</span>
-			</div>
+	<div class="col-xs-12 col-sm-8">
+		<div class="input-group input-group-lg">
+			<input type="text" class="form-control" ng-model="test" placeholder="Search...">
+			<span class="input-group-btn">
+				<button class="btn btn-default" type="button">Go</button>
+			</span>
 		</div>
-		
 	</div>
-	</br>
-	</br>
+	<div class="col-xs-12 col-sm-4 text-center">
+		<button type="button" class="btn btn-success text-center">
+			
+			New Chaine
+		</button>
+	</div>
+	</div>
+    </br>
+    </br>
 	<div class="list-group">
-		<div class="col-xs-6 col-sm-4" data-ng-repeat="person in management.users | filter:test">
-            <a data-ng-href="#!/management/{{ person._id }}" class="list-group">    
-				<h6 class="person-list text-center">
-					<i class="glyphicon glyphicon-user"></i>
-				</h6>
+		<div class="col-xs-6 col-sm-4" data-ng-repeat="chaine in managemente.chaines |filter: test">
+            <a ng-click="managemente.modalSeuil('bg', chaine)" class="list-group-item">    
+				<h4 class="chaine-list text-center">
+					<img src="{{ chaine.picture}}" height="50px">
+				</h4>
 			    <div class="row">
 			    	<div class="col-xs-10 col-xs-offset-1">
-			    		<h4>{{ person.name}}</h4>
+			    		<h4>{{ chaine.nomchaine}}</h4>
+			    		<small class="list-group-item-text text-muted">
+			    			<span data-ng-bind="chaine.bouquet"></span>
+			    		</small>
 			    		
 			    	</div>
 			    </div>
+			</a>
 		</div>
+	</div>
+	<div class="alert alert-warning text-center" data-ng-hide="!persons.$resolved || persons.length">
+		No users yet, why don't you <a href="/register">Add User</a>?
 	</div>
 </section>

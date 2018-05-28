@@ -10,7 +10,8 @@ var HistorySchema = new Schema({
     recepteur: { type: Number, required: true},
     bouquet: { type: String, required: true },
     channel: { type: String, required: true},
-    program: { type: String, required: true}
+    program: { type: String, required: true},
+    date: { type:Date, required: true}
     
     
    

@@ -23,6 +23,7 @@
     "json-object": "0.0.3",
     "jsonwebtoken": "^7.1.9",
     "mongodb": "^3.0.3",
+    "mongojs": "^2.5.0",
     "mongoose": "^4.6.0",
     "mongoose-title-case": "0.0.4",
     "mongoose-validator": "^1.2.5",

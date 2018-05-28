@@ -14,6 +14,7 @@
     <span class="glyphicon glyphicon-repeat spinner"></span>
     <p>Loading....</p>
 </div>
+
 <!-- Loading Icon (Bootstrap) -->
 
 <br>
@@ -30,11 +31,11 @@
    <button type="button" ng-click="managemente.showMore(number);" class="btn btn-success">Apply Filter</button>
 
     <!--/ Show All Button -->
-    <button type="button" ng-click="managemente.showAll" class="btn btn-warning">Show All</button>
+    <button type="button" ng-click="managemente.showAll()" class="btn btn-warning">Show All</button>
 
 <div class="navbar-form">
         <div class="form-group">
-           <input class="form-control col-md-0" ng-change="managemente.figureOutItemsToDisplay()"  type="text" ng-model="test" placeholder="Search"/>
+           <input class="form-control col-md-0" ng-change="loadData()"  type="text" ng-model="test" placeholder="Search" />
           
         </div>
       
@@ -93,13 +94,13 @@
             <th>Edit</th>
             <th>Delete</th>
         </tr>
-        <tr dir-paginate="chaine in managemente.chaines= (managemente.chaines|filter: test)
-        |itemsPerPage:8|limitTo: managemente.limit| orderBy: sortKey:reverse">
+        <tr dir-paginate="chaine in managemente.chaines |itemsPerPage:4 |filter: test|limitTo: managemente.limit| orderBy: sortKey:reverse">
             <td><img ng-src="{{ chaine.picture}}" height="50px"/></td>
             <td>{{ chaine.nomchaine}}</td>
             <td>{{ chaine.bouquet}}</td>
             <td>{{ chaine.recepteur}}</td>
-             <td><button ng-click="searchChaine(chaine._id);" data-toggle="modal" data-target="#chaineEditModal" class="btn btn-info btn-sm">Edit</button></td>
+          
+             <td><button ng-click="managemente.modalUpdate('bg', chaine)" data-toggle="modal"  class="btn btn-info btn-sm">Edit</button></td>
               <td><button type="button" data-toggle="modal" data-target="#deleteModal">
              <span class="glyphicon glyphicon-trash"></span></button>
               <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog">
@@ -119,24 +120,26 @@
                           <button type="button" class="btn btn-danger" data-ng-click="managemente.deleteChaine(chaine.nomchaine)">Delete</button>
                         </div>
                   </div>
-      <dir-pagination-controls
-       max-size="8"
-       direction-links="true"
-       boundary-links="true" >
-    </dir-pagination-controls>
+  
                 </div>
-   </div> 
+            </div> 
            </td> 
-
+       
+       
            
         </tr>
+       
         
         <!-- End: Table -->
  
     </table>
-   
+     <div class="alert alert-warning text-center" ng-if="test.length">
+    No chaines yet, why don't you <button type="button" ng-click="searchChaine(123456789012);" data-toggle="modal" data-target="#chaineAddModal" >
+        <strong>Add one</strong>
+      </button>?
+       </div>
     
-
+ 
 
 </div>
  
@@ -216,11 +219,7 @@
     </div>
   </div>
 </div>
-<div class="alert alert-warning text-center" data-ng-if="!managemente.chaines.length">
-    No chaines yet, why don't you <button type="button" ng-click="searchChaine(123456789012);" data-toggle="modal" data-target="#chaineAddModal" >
-        <strong>Add one</strong>
-      </button>?
-  </div>
+
 
   <br>
 <br>
@@ -260,7 +259,11 @@
     <!-- Simple Search Bar /-->
 </div>
 
-
+    <dir-pagination-controls
+       max-size="8"
+       direction-links="true"
+       boundary-links="true" >
+    </dir-pagination-controls>
  
 <br>
 <br>

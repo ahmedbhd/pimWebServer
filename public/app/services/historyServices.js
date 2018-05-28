@@ -1,16 +1,11 @@
 angular.module('historyServices', [])
-/* .factory('History', function($http) {
+.factory('History', function($http) {
     var historyFactory = {};
 
-     historyFactory.getHistory = function() {
-        return $http.get('/api/managementhistory/');
+     historyFactory.getHistorys = function() {
+        return $http.get('/api/h/');
     };
 
     return historyFactory;
 
  });
- */
-
-.factory('History', ['socketFactory',function(socketFactory){
-    return socketFactory();
-}])

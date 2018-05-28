@@ -1,12 +1,51 @@
-angular.module('managementeController', [])
+angular.module('managementeController', ['angularUtils.directives.dirPagination', 'ui.bootstrap', 'ui-notification'])
 
-.controller('managementeCtrl', function(Chaine, User, $scope, $window, $filter) {
- 
+.controller('managementeCtrl',  function(Chaine, User, $scope, $window, $filter, $http, uploadFile, $timeout, $uibModal, $log, Notification, $interval) {
+
     var app = this;
-     $scope.chaines = [];
+    //var modalInstance = null;
+     $scope.chaines = []; 
     $scope.labels = ["Agree", "Disagree"];
     $scope.data = [];
+    $scope.file = {};
 
+    $scope.Submit = function(){
+     
+     uploadFile.upload($scope.file).then(function(data) {
+       if (data.data.success){
+           $scope.file = {};
+       } else {
+        $scope.file = {};
+       }
+     });
+    };
+
+    $scope.photoChanged = function(files, index) {
+        if (files.length > 0 && files[0].name.match(/\.(png|jpeg|jpg)$/)) {
+            $scope.uploading = true;
+            var file = files[0];
+            var index = this.$index;
+            var fileReader = new FileReader();
+            fileReader.readAsDataURL(file);
+            fileReader.onload = function(e) {
+                $timeout(function() {
+                    $scope.thumbnail = {};
+                    $scope.thumbnail[index] = {dataUrl: e.target.result};
+                    $scope.uploading = false;
+                    $scope.message = false;
+                });
+            };
+        } else {
+            $scope.thumbnail = {};
+            $scope.message = false;
+        }
+    }
+
+
+    $scope.sort = function(keyname){
+      $scope.sortKey = keyname;
+      $scope.reverse = !$scope.reverse;
+    };    
 
     app.buildPager = buildPager;
     app.figureOutItemsToDisplay = figureOutItemsToDisplay;
@@ -21,10 +60,11 @@ angular.module('managementeController', [])
 
     function buildPager() {
       app.pagedItems = [];
-      app.itemsPerPage = 15;
       app.currentPage = 1;
       app.figureOutItemsToDisplay();
     }
+      
+
 
     function figureOutItemsToDisplay() {
       app.filteredItems = $filter('filter')(app.chaines, {
@@ -39,6 +79,8 @@ angular.module('managementeController', [])
     function pageChanged() {
       app.figureOutItemsToDisplay();
     } 
+
+
 
     function getStat(){
       Chaine.getStat().then(function(data, res){
@@ -65,6 +107,7 @@ angular.module('managementeController', [])
         // Check if able to get data from database
             if (data.data.success ) {
                            app.chaines = data.data.chaines;
+                           console.log(data);
          
       app.buildPager();
                 
@@ -77,6 +120,84 @@ angular.module('managementeController', [])
 
  }
  getChaines();
+
+    $scope.loadData = function () {
+      getChaines();
+  };
+    
+    this.modalUpdate = function(size, selectedChaine) {
+      var uibModalInstance = $uibModal.open({
+        templateUrl: 'app/views/pages/managemente/seuilChaine.html',
+        controller : function($scope, $uibModalInstance, chaine) {
+          $scope.chaine = chaine;
+
+          $scope.ok = function() {
+            $uibModalInstance.close($scope.chaine);
+          };
+
+          $scope.cancel = function() {
+            $uibModalInstance.dismiss('Cancel');
+          };
+        },
+        size : size,
+        resolve : {
+          chaine: function() {
+            return selectedChaine;
+          }
+        }
+      });
+
+      uibModalInstance.result.then(function (selectedItem) {
+        $scope.selected = selectedItem;
+      }, function() {
+        $log.info('Modal dismissed at : ' + new newDate());
+      });
+    };
+
+     this.modalSeuil = function(size, selectedChaine) {
+      var uibModalInstance = $uibModal.open({
+        templateUrl: 'app/views/pages/managemente/activerSeuil.html',
+        controller : function($scope, $uibModalInstance, chaine) {
+          $scope.chaine = chaine;
+
+          $scope.ok = function() {
+            $uibModalInstance.close($scope.chaine);
+          };
+
+          $scope.cancel = function() {
+            $uibModalInstance.dismiss('Cancel');
+          };
+
+          $scope.activer = function(recepteur) {
+         
+              if($scope.seuil >= 2000){
+                Notification.success({message: 'Channel atteint' + ' ' + $scope.seuil + ' ' + 'Vues'});
+              }$interval(function() {
+                 Notification.success({message: 'Channel atteint' + ' ' + $scope.seuil + ' ' + 'Vues'});
+            }, 9000);
+
+          };
+          
+        
+          $scope.desactiver = function() {
+             Notification.error({message: 'Seuil Desactive', delay: 8000});
+          };
+        },
+        size : size,
+        resolve : {
+          chaine: function() {
+            return selectedChaine;
+          }
+        }
+      });
+
+      uibModalInstance.result.then(function (selectedItem) {
+        $scope.selected = selectedItem;
+      }, function() {
+        $log.info('Modal dismissed at : ' + new newDate());
+      });
+    };
+
      // Function: Show more results on page
     app.showMore = function(number) {
         app.showMoreError = false; // Clear error message
@@ -91,24 +212,41 @@ angular.module('managementeController', [])
     // Function: Show all results on page
     app.showAll = function() {
         app.limit = undefined; // Clear ng-repeat searchLimit
-        app.showMoreError = false; // Clear error message
-    };
+        app.showMoreError = false; 
 
+    };
+   
+
+    app.Create = function () {
+      Chaine.create().then(function(data) {
+    
+            // Check if able to delete user
+            if (data.data.success) {
+                getChaines(); // Reset users on page
+              console.log(data);
+            } else {
+                app.showMoreError = data.data.message;
+            // Set error message
+            }
+          
+        });
+     
+ };
 
      app.deleteChaine = function(nomchaine) {
         // Run function to delete a user
         Chaine.deleteChaine(nomchaine).then(function(data) {
-           if ($window.confirm('Are you sure you want to delete this user?')) {
+    
             // Check if able to delete user
             if (data.data.success) {
                 getChaines(); // Reset users on page
-                         $window.success('User deleted successfully!');
+               
 
             } else {
                 app.showMoreError = data.data.message;
             // Set error message
             }
-          }
+          
         });
 
     };
@@ -158,39 +296,112 @@ angular.module('managementeController', [])
     app.sortOrder = function(order) {
         app.sort = order; // Assign sort order variable requested by user
     };
+   
+   
+   $scope.working = 'Angular is Working';
+        function onError () {
 
+
+      app.onError = function (error) {
+            $scope.error = error.data;
+        };
+        };
+        //end error function
+
+        //get all persone
+      app.onChainesGetCompleted = function(response){
+        $scope.chaines = response.data;
+            console.log($scope.chaines);
+      }
+      
+      
+        
+        
+      //end get all persons
+
+        function onGetByIdCompleted(){
+
+
+        app.onGetByIdCompleted = function(response){
+            $scope.chaine = response.data;
+            console.log(response.data);
+        };
+        };
+        $scope.searchChaine = function(id){
+            $http.get('/api/chaine/' + id)
+                    .then(onGetByIdCompleted, onError);
+            console.log(id);
+        };
+        
+
+        $scope.addChaine = function(chaine){
+            $http.post('/api/addChaine/', chaine)
+                    .then(onAddChaineCompleted, onError);
+            console.log(chaine);
+        };
+        
+        function onAddChaineCompleted () {
+
+
+        app.onAddChaineCompleted = function(response){
+            $scope.chaine = response.data;
+            console.log(response.data);
+            refresh();
+        };
+         };
+        //end add new person
+
+      
+        //end delete person
+
+        //update person
+        $scope.updateChaine= function(chaine){
+            $http.put('/api/updateChaine/', chaine)
+                .then(onUpdateChaineCompleted, onError);
+                    console.log(chaine);
+        };
+        
+        function onUpdateChaineCompleted(){
+
+
+        app.onUpdateChaineCompleted = function(response){
+            $scope.chaine = response.data;//response.data;
+            console.log(response.data);
+            refresh();
+        };
+      };
+       function refresh() {
+
+
+      app.refresh = function(){
+          $http.get('/api/managemente/')
+            .then(onChainesGetCompleted, onError);
+          console.log('Response received...');
+        }
+      };
 
 })
-
-.controller('editeCtrl', function($scope, $routeParams, Chaine) {
-   var app = this;
-   app.phase11 = true;
-
-   Chaine.getChaine($routeParams.id).then(function(data) {
-         if (data.data.success) {
-          $scope.newChaine = data.data.chaine.nomchaine;
-          console.log(data);
-         } else {
-           app.errorMsg = data.data.message;
-         }
-       });
-
-   app.chainePhase = function(){
-     app.phase11 = true;
-   };
-
-
-   app.updateChaine = function(newChaine, valid) {
-        app.errorMsg = false; // Clear any error messages
+.controller('editeCtrl', function($scope, chaines) {
        
 
-        if (valid) {
-
-        } else {
-          app.errorMsg  = 'Please';
-                  }
-   };
 
 
-})
+
+  
+  this.update = function(updatedChaine, $http) {
+    var chaine = updatedChaine;
+
+    chaine.$update(function(chaine) {
+       $location.path('managemente/'+ chaine.nomchaine);
+
+    }, function(errorResponse) {
+      $scope.error = errorResponse.data.message;
+    });
+  };
+});
+
+
+
+
+
 
